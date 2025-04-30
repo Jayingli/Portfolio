@@ -112,6 +112,9 @@ export function CardCarousel({ cards, onCardClick, className }: CardCarouselProp
   const mainCardWidth = isMobile ? 280 : isTablet ? 380 : 420
   const mainCardHeight = isMobile ? 360 : isTablet ? 460 : 500
 
+  // For certification cards, use fixed dimensions to match the largest card
+  const certCardHeight = cards[0]?.type === "certifications" ? (isMobile ? 480 : 520) : mainCardHeight
+
   const sideCardWidth = isMobile ? 220 : isTablet ? 300 : 320
   const sideCardHeight = isMobile ? 300 : isTablet ? 380 : 400
 
@@ -128,7 +131,7 @@ export function CardCarousel({ cards, onCardClick, className }: CardCarouselProp
 
   // Adjust the container padding and spacing
   return (
-    <div className={cn("relative w-full px-1", className)}>
+    <div className={cn("relative w-full px-1 card-carousel", className)}>
       {/* Main carousel */}
       <div
         ref={carouselRef}
@@ -162,7 +165,11 @@ export function CardCarousel({ cards, onCardClick, className }: CardCarouselProp
                 card={cards[safeCurrentIndex - 1]}
                 onClick={() => handlePrevious()}
                 className="shadow-md pointer-events-none"
-                style={{ width: `${sideCardWidth}px`, height: `${sideCardHeight}px`, maxWidth: "100%" }}
+                style={{
+                  width: `${sideCardWidth}px`,
+                  height: cards[0]?.type === "certifications" ? `${certCardHeight * 0.8}px` : `${sideCardHeight}px`,
+                  maxWidth: "100%",
+                }}
               />
             </div>
           )}
@@ -180,7 +187,7 @@ export function CardCarousel({ cards, onCardClick, className }: CardCarouselProp
               className="shadow-xl"
               style={{
                 width: `${mainCardWidth}px`,
-                height: `${mainCardHeight}px`,
+                height: cards[0]?.type === "certifications" ? `${certCardHeight}px` : `${mainCardHeight}px`,
                 maxWidth: "100%",
               }}
             />
@@ -204,7 +211,11 @@ export function CardCarousel({ cards, onCardClick, className }: CardCarouselProp
                 card={cards[safeCurrentIndex + 1]}
                 onClick={() => handleNext()}
                 className="shadow-md pointer-events-none"
-                style={{ width: `${sideCardWidth}px`, height: `${sideCardHeight}px`, maxWidth: "100%" }}
+                style={{
+                  width: `${sideCardWidth}px`,
+                  height: cards[0]?.type === "certifications" ? `${certCardHeight * 0.8}px` : `${sideCardHeight}px`,
+                  maxWidth: "100%",
+                }}
               />
             </div>
           )}

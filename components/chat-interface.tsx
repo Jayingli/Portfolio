@@ -52,7 +52,7 @@ export function ChatInterface({ portfolioData }: ChatInterfaceProps) {
   const [showFollowUp, setShowFollowUp] = useState(false)
   const [initialLoadComplete, setInitialLoadComplete] = useState(false)
   const [inputAreaHeight, setInputAreaHeight] = useState(0)
-  const [useAI, setUseAI] = useState(false) // Default to basic responses until we confirm API key is set
+  const [useAI, setUseAI] = useState(true) // Enable AI responses by default
 
   // Calculate the height of the fixed bottom section (suggestions + input)
   const bottomSectionHeight = isMobile ? 120 : 160
@@ -101,8 +101,8 @@ export function ChatInterface({ portfolioData }: ChatInterfaceProps) {
       }
     }
 
-    // Uncomment this if you implement the config endpoint
-    // checkApiConfig()
+    // Check if OpenAI API is configured
+    checkApiConfig()
   }, [])
 
   // Mark initial load as complete after component mounts, but prevent auto-scrolling
@@ -206,7 +206,11 @@ export function ChatInterface({ portfolioData }: ChatInterfaceProps) {
       lowercaseQuery.includes("skill") ||
       lowercaseQuery.includes("abilities") ||
       lowercaseQuery.includes("capable") ||
-      lowercaseQuery.includes("can do")
+      lowercaseQuery.includes("can do") ||
+      lowercaseQuery.includes("technologies") ||
+      lowercaseQuery.includes("tech stack") ||
+      lowercaseQuery.includes("programming") ||
+      lowercaseQuery.includes("tools")
     ) {
       return "skills"
     }
@@ -215,7 +219,11 @@ export function ChatInterface({ portfolioData }: ChatInterfaceProps) {
       lowercaseQuery.includes("project") ||
       lowercaseQuery.includes("portfolio") ||
       lowercaseQuery.includes("built") ||
-      lowercaseQuery.includes("created")
+      lowercaseQuery.includes("created") ||
+      lowercaseQuery.includes("technologies") ||
+      lowercaseQuery.includes("tech stack") ||
+      lowercaseQuery.includes("tech used") ||
+      lowercaseQuery.includes("tools used")
     ) {
       return "projects"
     }
@@ -394,6 +402,20 @@ export function ChatInterface({ portfolioData }: ChatInterfaceProps) {
           setActiveSection(cardType)
           setExploredTopics((prev) => new Set([...prev, cardType]))
         }
+      } else if (
+        lowercaseInput.includes("technologies") ||
+        lowercaseInput.includes("tech stack") ||
+        lowercaseInput.includes("tools used") ||
+        (lowercaseInput.includes("use") && lowercaseInput.includes("project"))
+      ) {
+        responseMessage = {
+          id: Date.now().toString(),
+          content: "Here are the technologies I've used in my projects:",
+          sender: "bot",
+          cardType: "projects",
+        }
+        setActiveSection("projects")
+        setExploredTopics((prev) => new Set([...prev, "projects"]))
       } else if (lowercaseInput.includes("experience") || lowercaseInput.includes("work")) {
         responseMessage = {
           id: Date.now().toString(),

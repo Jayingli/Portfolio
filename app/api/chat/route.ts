@@ -86,7 +86,8 @@ function getPortfolioContext() {
   return context
 }
 
-// Create the system prompt with instructions
+// Enhance the system prompt to better handle technology-related questions
+// Update the createSystemPrompt function to include specific instructions about technologies
 function createSystemPrompt() {
   const portfolioContext = getPortfolioContext()
 
@@ -99,6 +100,8 @@ IMPORTANT INSTRUCTIONS:
 4. Keep responses concise and focused.
 5. If you're unsure about specific details, acknowledge the limitations of your knowledge rather than making up information.
 6. Do not mention that you are an AI model or that you're using specific data - just respond naturally as a representative of Jay's portfolio.
+7. When asked about technologies, tools, or tech stack used in projects, provide specific details from the project descriptions and tags.
+8. For questions about skills or technologies, reference both the Skills section and the relevant technologies mentioned in Projects.
 
 HERE IS JAY'S PORTFOLIO INFORMATION:
 ${portfolioContext}
@@ -134,9 +137,12 @@ export async function POST(request: NextRequest) {
     // Get the system prompt
     const systemPrompt = createSystemPrompt()
 
+    // Add better error handling for the OpenAI API call
     try {
       // Create the OpenAI client
       const openai = getOpenAIClient()
+
+      console.log("Sending request to OpenAI API with message:", message.substring(0, 50) + "...")
 
       // Make the API call
       const response = await openai.chat.completions.create({
@@ -154,6 +160,8 @@ export async function POST(request: NextRequest) {
         temperature: 0.7,
         max_tokens: 500,
       })
+
+      console.log("Received response from OpenAI API")
 
       return NextResponse.json({
         success: true,
@@ -178,6 +186,14 @@ export async function POST(request: NextRequest) {
             message: "Rate limit exceeded with AI provider. Please try again later.",
           },
           { status: 500 },
+        )
+      } else if (openaiError.code === "context_length_exceeded") {
+        return NextResponse.json(
+          {
+            success: false,
+            message: "The request exceeded the maximum context length. Please shorten your query.",
+          },
+          { status: 400 },
         )
       }
 

@@ -61,145 +61,144 @@ export default function CardPreview({ card, onClick, className, style }: CardPre
     <motion.div
       className={cn(
         "relative flex-shrink-0 max-w-full cursor-pointer",
-        "p-3 sm:p-4 md:p-5 rounded-2xl h-full", // Reduced padding
+        "p-2 sm:p-3 md:p-4 rounded-2xl", // Reduced padding
         "bg-white dark:bg-[#1e1e1e]",
         "border dark:border-white/5",
-        "flex flex-col", // Added flex column to better control spacing
+        "flex flex-col",
         isHovered ? "shadow-lg" : "shadow-sm",
+        card.type === "experience" ? "experience-card" : "",
+        card.type === "skills" ? "skills-card" : "",
+        card.type === "projects" ? "projects-card" : "",
+        card.type === "certifications" ? "certifications-card" : "",
+        card.type === "education" ? "education-card" : "",
+        card.type === "volunteering" ? "volunteering-card" : "",
         className,
       )}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={(e) => {
         e.stopPropagation()
-
-        // If the card has a link, navigate directly to it instead of opening a modal
         if (card.link) {
           window.open(card.link, "_blank", "noopener,noreferrer")
         }
-        // Otherwise do nothing (don't call the onClick prop which would open the modal)
       }}
       style={{
         ...style,
-        maxHeight: "80vh", // Reduced max-height constraint to ensure card fits in viewport with navigation
+        height: "100%",
+        overflow: "hidden",
       }}
       whileHover={{
         scale: 1.02,
         transition: { duration: 0.3, ease: "easeOut" },
       }}
-      // Removed initial and animate properties to disable fade in/out animations
     >
-      <div
-        className={cn(
-          "flex flex-col", // Added flex column to better control spacing
-          isHovered ? "shadow-lg" : "shadow-sm",
-        )}
-      >
-        <div className="flex items-center gap-2 mb-2">
+      <div className="flex flex-col">
+        {/* Header with title and icon */}
+        <div className="flex items-center gap-2 mb-1">
           {(card.type === "experience" || card.type === "certifications" || card.type === "education") &&
           card.imageUrl ? (
-            <motion.div
-              className={cn("w-8 h-8 flex items-center justify-center rounded-sm", isXLMedia ? "bg-white p-0.5" : "")}
-              whileHover={{ scale: 1.1 }}
-              animate={{ scale: isHovered ? 1.05 : 1 }}
-              transition={{ duration: 0.2 }}
+            <div
+              className={cn("w-7 h-7 flex items-center justify-center rounded-sm", isXLMedia ? "bg-white p-0.5" : "")}
             >
               <Image
                 src={card.imageUrl || "/placeholder.svg"}
                 alt={`${card.title} logo`}
-                width={32}
-                height={32}
-                className={cn("object-contain", isXLMedia ? "max-h-7 max-w-7" : "max-h-8 max-w-8")}
+                width={28}
+                height={28}
+                className={cn(
+                  "object-contain",
+                  isXLMedia ? "max-h-6 max-w-6" : "max-h-7 max-w-7",
+                  isIBM ? "scale-75" : "",
+                )}
               />
-            </motion.div>
+            </div>
           ) : (
-            <motion.span
-              className="text-muted-foreground"
-              aria-hidden="true"
-              animate={{
-                rotate: isHovered ? [0, -10, 10, -5, 5, 0] : 0,
-                scale: isHovered ? 1.1 : 1,
-              }}
-              transition={{
-                duration: 0.5,
-                ease: "easeInOut",
-              }}
-            >
+            <span className="text-muted-foreground" aria-hidden="true">
               {getTypeIcon(card.type)}
-            </motion.span>
+            </span>
           )}
-          <h3 className="font-bold text-base sm:text-lg line-clamp-1">{card.title}</h3>
-          <motion.div
-            className="ml-auto"
-            animate={{
-              x: isHovered ? 0 : -3,
-              opacity: isHovered ? 1 : 0.5,
-            }}
-            transition={{ duration: 0.2 }}
-          >
-            <ChevronRight className="h-4 w-4 text-muted-foreground" />
-          </motion.div>
+          <h3 className="font-bold text-sm sm:text-base line-clamp-1">{card.title}</h3>
+          <ChevronRight className="h-4 w-4 text-muted-foreground ml-auto" />
         </div>
 
-        <p className="text-xs sm:text-sm text-muted-foreground mb-1">{card.subtitle}</p>
+        {/* Subtitle and dates - more compact */}
+        <p className="text-xs text-muted-foreground mb-1 line-clamp-1">{card.subtitle}</p>
+        {card.dates && <p className="text-xs text-muted-foreground mb-1 italic line-clamp-1">{card.dates}</p>}
 
-        {card.dates && <p className="text-xs text-muted-foreground mb-2 italic">{card.dates}</p>}
-
-        {/* Scrollable description area */}
-        <div className="flex-grow overflow-y-auto mb-2 pr-1 text-xs sm:text-sm text-foreground/80 leading-relaxed">
-          <div className="space-y-4">
-            {card.description.split("\n\n").map((paragraph, i) => {
-              // Check if this is a section header with emoji (🧩, 🔧, 🎯)
-              if (/^[🧩🔧🎯]/u.test(paragraph)) {
-                const [header, ...content] = paragraph.split("\n")
-                return (
-                  <div key={i} className="mt-3 first:mt-0">
-                    <p className="font-bold text-foreground text-xs sm:text-sm tracking-wide mb-1">{header}</p>
-                    <div className="whitespace-pre-line">{content.join("\n")}</div>
-                  </div>
-                )
-              }
-              // Regular paragraph or list
-              return (
-                <p key={i} className="whitespace-pre-line">
-                  {paragraph}
-                </p>
-              )
-            })}
-          </div>
+        {/* Description - more limited */}
+        <div className="flex-grow mb-2 pr-1 text-xs text-foreground/80 leading-relaxed">
+          <p className="line-clamp-2 hover:line-clamp-3 transition-all duration-300">
+            {card.description.split("\n\n")[0]}
+          </p>
         </div>
 
-        <div className="mt-auto pt-2 border-t border-border/30">
+        {/* Tags - reduced */}
+        <div className="mt-auto pt-1 border-t border-border/30">
           {card.tags && card.tags.length > 0 && (
-            <div className="flex flex-wrap gap-1.5 mb-2">
-              {/* Show all tags */}
-              {card.tags.map((tag) => (
+            <div className="flex flex-wrap gap-0.5 mb-1">
+              {card.tags.slice(0, 2).map((tag) => (
                 <TagBadge
                   key={tag}
                   label={tag}
-                  className="text-[9px] sm:text-[10px] px-2 py-0.5 rounded-full border border-border/40 shadow-sm hover:shadow-md transition-shadow duration-200 bg-background/50"
+                  className="text-[8px] sm:text-[9px] px-1 py-0 rounded-full border border-border/40 bg-background/50"
                 />
               ))}
+              {card.tags.length > 2 && (
+                <span className="text-[8px] sm:text-[9px] px-1 py-0 rounded-full border border-border/40 bg-background/50 text-muted-foreground">
+                  +{card.tags.length - 2}
+                </span>
+              )}
             </div>
           )}
 
-          {/* Link */}
+          {/* Link - simplified */}
           {card.link && (
-            <div className="mt-1">
-              <Button
-                asChild
-                variant="outline"
-                size="sm"
-                className="w-full text-xs h-7 flex items-center justify-center gap-1"
-              >
-                <a href={card.link} target="_blank" rel="noopener noreferrer">
-                  View Project <ExternalLink className="h-3 w-3 ml-1" />
-                </a>
-              </Button>
-            </div>
+            <Button
+              asChild
+              variant="outline"
+              size="sm"
+              className="w-full text-xs h-6 flex items-center justify-center gap-1 mt-1"
+            >
+              <a href={card.link} target="_blank" rel="noopener noreferrer">
+                View <ExternalLink className="h-3 w-3 ml-1" />
+              </a>
+            </Button>
           )}
         </div>
       </div>
     </motion.div>
   )
 }
+
+// Remove or comment out this entire block
+// const cardStyles = `
+//   /* Base styles for all cards */
+//   .experience-card, .skills-card, .projects-card,
+//   .certifications-card, .education-card, .volunteering-card {
+//     height: 100%;
+//   }
+
+//   /* Ensure cards in the same carousel have consistent heights */
+//   .card-carousel .certifications-card {
+//     height: 520px !important; /* Taller to match the Product Manager cert */
+//     min-height: 520px !important;
+//     max-height: 520px !important;
+//     width: 100% !important;
+//   }
+
+//   /* Responsive adjustments */
+//   @media (max-width: 640px) {
+//     .card-carousel .certifications-card {
+//       height: 480px !important;
+//       min-height: 480px !important;
+//       max-height: 480px !important;
+//     }
+//   }
+// `
+
+// // Add the styles to the document
+// if (typeof document !== "undefined") {
+//   const styleElement = document.createElement("style")
+//   styleElement.innerHTML = cardStyles
+//   document.head.appendChild(styleElement)
+// }

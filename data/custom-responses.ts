@@ -94,4 +94,9 @@ export const customResponses: CustomResponse[] = [
     response:
       "I've served as a Vaccine Ambassador at Scadding Court Community Centre, where I received the City of Toronto Vaccine Ambassador Certificate. I also volunteer at Fort York Food Bank, supporting food distribution and community initiatives for vulnerable populations in Toronto.",
   },
+  {
+    keywords: ["technologies", "tech stack", "tools used", "programming languages", "frameworks"],
+    response:
+      "In my projects, I've worked with a variety of technologies including Next.js, React, TypeScript, Tailwind CSS, Node.js, Express, MySQL, NoSQL databases, REST APIs, and various UI libraries like shadcn/ui. I've also integrated services like OpenAI, Google Maps API, Firebase, and Stripe for payments. My technical skills span both frontend and backend development, with experience in responsive design, accessibility, and modern JavaScript frameworks.",
+  },
 ]
