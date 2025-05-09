@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { useState } from "react"
-import { ChevronRight, ExternalLink } from "lucide-react"
+import { ExternalLink } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { TagBadge } from "@/components/tag-badge"
 import type { CardData } from "@/data/portfolio-data"
@@ -51,6 +51,12 @@ export default function CardPreview({ card, onClick, className, style }: CardPre
     }
   }
 
+  // Function to remove puzzle emojis and other section emojis
+  const removeEmojis = (text: string) => {
+    // Remove puzzle emoji (🧩), wrench emoji (🔧), target emoji (🎯) and any other emojis at the start of lines
+    return text.replace(/^[🧩🔧🎯]+ */gmu, "")
+  }
+
   // Check if this is the XLMedia logo
   const isXLMedia = card.imageUrl?.includes("xlmedia-logo.png")
 
@@ -93,7 +99,7 @@ export default function CardPreview({ card, onClick, className, style }: CardPre
       }}
     >
       <div className="flex flex-col">
-        {/* Header with title and icon */}
+        {/* Header with title and icon - removed chevron */}
         <div className="flex items-center gap-2 mb-1">
           {(card.type === "experience" || card.type === "certifications" || card.type === "education") &&
           card.imageUrl ? (
@@ -118,46 +124,50 @@ export default function CardPreview({ card, onClick, className, style }: CardPre
             </span>
           )}
           <h3 className="font-bold text-sm sm:text-base line-clamp-1">{card.title}</h3>
-          <ChevronRight className="h-4 w-4 text-muted-foreground ml-auto" />
         </div>
 
         {/* Subtitle and dates - more compact */}
         <p className="text-xs text-muted-foreground mb-1 line-clamp-1">{card.subtitle}</p>
         {card.dates && <p className="text-xs text-muted-foreground mb-1 italic line-clamp-1">{card.dates}</p>}
 
-        {/* Description - more limited */}
-        <div className="flex-grow mb-2 pr-1 text-xs text-foreground/80 leading-relaxed">
-          <p className="line-clamp-2 hover:line-clamp-3 transition-all duration-300">
-            {card.description.split("\n\n")[0]}
-          </p>
+        {/* Description - enhanced for experience cards and removed emojis */}
+        <div className="flex-grow mb-2 pr-1 text-xs text-foreground/80 leading-relaxed overflow-y-auto max-h-[150px] scrollbar-thin">
+          {card.type === "experience" ? (
+            <div className="space-y-1">
+              {card.description.split("\n\n").map((paragraph, i) => (
+                <p key={i} className="whitespace-pre-line">
+                  {removeEmojis(paragraph)}
+                </p>
+              ))}
+            </div>
+          ) : (
+            <p className="line-clamp-3 hover:line-clamp-4 transition-all duration-300">
+              {removeEmojis(card.description.split("\n\n")[0])}
+            </p>
+          )}
         </div>
 
-        {/* Tags - reduced */}
+        {/* Tags - show all */}
         <div className="mt-auto pt-1 border-t border-border/30">
           {card.tags && card.tags.length > 0 && (
-            <div className="flex flex-wrap gap-0.5 mb-1">
-              {card.tags.slice(0, 2).map((tag) => (
+            <div className="flex flex-wrap gap-0.5 mb-3">
+              {card.tags.map((tag) => (
                 <TagBadge
                   key={tag}
                   label={tag}
                   className="text-[8px] sm:text-[9px] px-1 py-0 rounded-full border border-border/40 bg-background/50"
                 />
               ))}
-              {card.tags.length > 2 && (
-                <span className="text-[8px] sm:text-[9px] px-1 py-0 rounded-full border border-border/40 bg-background/50 text-muted-foreground">
-                  +{card.tags.length - 2}
-                </span>
-              )}
             </div>
           )}
 
-          {/* Link - simplified */}
+          {/* Link - with increased spacing above */}
           {card.link && (
             <Button
               asChild
               variant="outline"
               size="sm"
-              className="w-full text-xs h-6 flex items-center justify-center gap-1 mt-1"
+              className="w-full text-xs h-6 flex items-center justify-center gap-1 mt-3"
             >
               <a href={card.link} target="_blank" rel="noopener noreferrer">
                 View <ExternalLink className="h-3 w-3 ml-1" />
