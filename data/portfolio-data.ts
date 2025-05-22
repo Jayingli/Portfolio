@@ -26,15 +26,31 @@ export const portfolioData: PortfolioData = {
     {
       id: "exp0",
       type: "experience",
-      title: "Technical Project Manager",
-      subtitle: "Noise Digital, Toronto, ON",
+      title: "Technical Project Manager & Product Owner",
+      subtitle: "Noise Digital Inc., Toronto, ON",
       dates: "Aug 2024 – Present",
       description:
-        "Driving delivery of complex technical projects across Noise's Technology Team under a PMO structure.\n\n" +
-        "Leading planning, execution, and stakeholder alignment for marketing tech and data analytics projects.\n\n" +
-        "Managing resources, SOWs, and deliverables using Asana.\n\n" +
-        "Collaborating with cross-functional teams, QA technical docs, facilitating Agile ceremonies, and ensuring projects meet acceptance criteria.",
-      tags: ["Agile", "PMO", "Asana", "Marketing Tech", "Data Analytics", "Stakeholder Management", "Technical Docs"],
+        "Manage $750K+ Martech and data initiatives for enterprise clients across insurance, healthcare, higher education, finance, advertising, and law sectors—overseeing GTM migrations, GA4 framework builds, and OneTrust consent deployments to ensure GDPR/CCPA compliance and timely delivery.\n\n" +
+        "Own end-to-end delivery of 10+ active projects across Agile and Waterfall life cycles, including SOW creation, sprint planning, stakeholder alignment, QA coordination, and production handoff.\n\n" +
+        "Translate business objectives into technical specifications for GA4 event tracking, BigQuery-based CDMPs, and consent management workflows; bridge gaps between legal, engineering, and marketing teams to streamline execution.\n\n" +
+        "Develop and maintain project documentation including RAID logs, test plans, and dataLayer schemas; lead weekly standups and status calls to drive clarity across distributed teams.\n\n" +
+        "Proactively identify and manage 30+ project risks such as data pipeline delays, GTM code conflicts, and inconsistent taxonomies; implement mitigation plans to minimize delivery disruption.\n\n" +
+        "Lead project communications and client-facing deliverables, including technical briefs, QA summary reports, and post-implementation support plans; secure stakeholder buy-in for key changes such as schema redesigns and container rebuilds.\n\n" +
+        "Coordinate full project lifecycle from scoping to invoicing, working closely with analytics leads, engineering resources, clients, and third-party vendors.",
+      tags: [
+        "Agile",
+        "Waterfall",
+        "Martech",
+        "GA4",
+        "GTM",
+        "BigQuery",
+        "OneTrust",
+        "GDPR/CCPA",
+        "SOW",
+        "RAID",
+        "Stakeholder Management",
+        "Technical Documentation",
+      ],
       imageUrl: "/images/noise-logo.png",
     },
     {

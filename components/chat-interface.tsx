@@ -14,6 +14,7 @@ import { customResponses } from "@/data/custom-responses"
 import { motion, AnimatePresence } from "framer-motion"
 import { TypingIndicator } from "@/components/typing-indicator"
 import { AvatarFallback } from "@/components/avatar-fallback"
+import { ChatExperienceSection } from "@/components/chat-experience-section"
 
 interface Message {
   id: string
@@ -186,6 +187,22 @@ export function ChatInterface({ portfolioData }: ChatInterfaceProps) {
       if (messagesContainerRef.current) {
         messagesContainerRef.current.scrollTop = 0
       }
+    }
+  }, [])
+
+  // Add this inside the ChatInterface component, with the other useEffect hooks
+  useEffect(() => {
+    const handleCardClick = (e: Event) => {
+      const customEvent = e as CustomEvent<CardData>
+      if (customEvent.detail) {
+        handleCardClick(customEvent.detail)
+      }
+    }
+
+    window.addEventListener("cardClick", handleCardClick as EventListener)
+
+    return () => {
+      window.removeEventListener("cardClick", handleCardClick as EventListener)
     }
   }, [])
 
@@ -685,19 +702,21 @@ export function ChatInterface({ portfolioData }: ChatInterfaceProps) {
                               <Button
                                 variant="outline"
                                 size="sm"
-                                onClick={() => handleSuggestionClick("What's your latest project?", "projects")}
+                                onClick={() =>
+                                  handleSuggestionClick("Tell me about your work experience", "experience")
+                                }
                                 className="rounded-full text-xs bg-white/80 dark:bg-black/20 hover:bg-white dark:hover:bg-black/40 border-muted inline-flex mx-1 my-1 px-2 py-1 h-auto"
                               >
-                                "What's your latest project?"
+                                "Tell me about your work experience"
                               </Button>{" "}
                               or{" "}
                               <Button
                                 variant="outline"
                                 size="sm"
-                                onClick={() => handleSuggestionClick("What are your top skills?", "skills")}
+                                onClick={() => handleSuggestionClick("Show me your projects", "projects")}
                                 className="rounded-full text-xs bg-white/80 dark:bg-black/20 hover:bg-white dark:hover:bg-black/40 border-muted inline-flex mx-1 my-1 px-2 py-1 h-auto"
                               >
-                                "What are your top skills?"
+                                "Show me your projects"
                               </Button>
                             </p>
                           ) : (
@@ -853,7 +872,7 @@ export function ChatInterface({ portfolioData }: ChatInterfaceProps) {
                       </motion.div>
                     </div>
 
-                    {message.cardType && message.cardType !== "custom" && portfolioData[message.cardType] && (
+                    {message.cardType === "experience" && portfolioData[message.cardType] && (
                       <motion.div
                         ref={index === messages.length - 1 ? activeCardRef : undefined}
                         className="pl-2 pr-2 mt-2 pb-4"
@@ -865,9 +884,28 @@ export function ChatInterface({ portfolioData }: ChatInterfaceProps) {
                           delay: 0.3,
                         }}
                       >
-                        <CardCarousel cards={portfolioData[message.cardType]} onCardClick={handleCardClick} />
+                        <ChatExperienceSection experiences={portfolioData[message.cardType]} />
                       </motion.div>
                     )}
+
+                    {message.cardType &&
+                      message.cardType !== "experience" &&
+                      message.cardType !== "custom" &&
+                      portfolioData[message.cardType] && (
+                        <motion.div
+                          ref={index === messages.length - 1 ? activeCardRef : undefined}
+                          className="pl-2 pr-2 mt-2 pb-4"
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{
+                            duration: 0.5,
+                            ease: "easeOut",
+                            delay: 0.3,
+                          }}
+                        >
+                          <CardCarousel cards={portfolioData[message.cardType]} onCardClick={handleCardClick} />
+                        </motion.div>
+                      )}
 
                     {message.cardType === "custom" && (
                       <motion.div
@@ -985,18 +1023,6 @@ export function ChatInterface({ portfolioData }: ChatInterfaceProps) {
                     <Send className="h-4 w-4" />
                   </Button>
                 </motion.div>
-              </div>
-
-              {/* AI Mode Toggle */}
-              <div className="flex justify-end mt-2">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setUseAI(!useAI)}
-                  className="text-xs text-muted-foreground"
-                >
-                  {useAI ? "Using AI Responses" : "Using Basic Responses"}
-                </Button>
               </div>
             </div>
           </div>

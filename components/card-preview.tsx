@@ -6,9 +6,9 @@ import { ExternalLink } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { TagBadge } from "@/components/tag-badge"
 import type { CardData } from "@/data/portfolio-data"
-import { Briefcase, Wrench, FolderOpen, Award, GraduationCap, Heart } from "lucide-react"
+import { Briefcase, Wrench, FolderOpen, Award, GraduationCap, Heart, ChevronDown } from "lucide-react"
 import Image from "next/image"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 
 interface CardPreviewProps {
@@ -21,6 +21,7 @@ interface CardPreviewProps {
 
 export default function CardPreview({ card, onClick, className, style }: CardPreviewProps) {
   const [isHovered, setIsHovered] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(false)
 
   // Safety check to ensure card exists and has a type
   if (!card || !card.type) {
@@ -35,19 +36,19 @@ export default function CardPreview({ card, onClick, className, style }: CardPre
   const getTypeIcon = (type: string) => {
     switch (type) {
       case "experience":
-        return <Briefcase size={18} />
+        return <Briefcase size={24} />
       case "skills":
-        return <Wrench size={18} />
+        return <Wrench size={24} />
       case "projects":
-        return <FolderOpen size={18} />
+        return <FolderOpen size={24} />
       case "certifications":
-        return <Award size={18} />
+        return <Award size={24} />
       case "education":
-        return <GraduationCap size={18} />
+        return <GraduationCap size={24} />
       case "volunteering":
-        return <Heart size={18} />
+        return <Heart size={24} />
       default:
-        return <FolderOpen size={18} />
+        return <FolderOpen size={24} />
     }
   }
 
@@ -56,6 +57,21 @@ export default function CardPreview({ card, onClick, className, style }: CardPre
     // Remove puzzle emoji (🧩), wrench emoji (🔧), target emoji (🎯) and any other emojis at the start of lines
     return text.replace(/^[🧩🔧🎯]+ */gmu, "")
   }
+
+  // Format description into bullet points if it's an experience card
+  const formatDescription = (description: string, type: string) => {
+    if (type !== "experience") {
+      return [removeEmojis(description.split("\n\n")[0])]
+    }
+
+    // For experience cards, split by double newlines and format as bullet points
+    return description
+      .split("\n\n")
+      .filter((point) => point.trim().length > 0)
+      .map((point) => removeEmojis(point.trim()))
+  }
+
+  const bulletPoints = formatDescription(card.description, card.type)
 
   // Check if this is the XLMedia logo
   const isXLMedia = card.imageUrl?.includes("xlmedia-logo.png")
@@ -66,13 +82,14 @@ export default function CardPreview({ card, onClick, className, style }: CardPre
   return (
     <motion.div
       className={cn(
-        "relative flex-shrink-0 max-w-full cursor-pointer",
-        "p-2 sm:p-3 md:p-4 rounded-2xl", // Reduced padding
+        "relative flex-shrink-0 cursor-pointer",
+        "w-full min-w-[320px] sm:min-w-[400px] md:min-w-[480px]", // Width constraints
+        "p-4 sm:p-6 md:p-8 rounded-2xl", // Padding
         "bg-white dark:bg-[#1e1e1e]",
         "border dark:border-white/5",
         "flex flex-col",
-        isHovered ? "shadow-lg" : "shadow-sm",
-        card.type === "experience" ? "experience-card" : "",
+        isHovered ? "shadow-lg" : "shadow-md",
+        card.type === "experience" ? "experience-card min-h-[500px]" : "", // Added min-height for experience cards
         card.type === "skills" ? "skills-card" : "",
         card.type === "projects" ? "projects-card" : "",
         card.type === "certifications" ? "certifications-card" : "",
@@ -98,19 +115,19 @@ export default function CardPreview({ card, onClick, className, style }: CardPre
         transition: { duration: 0.3, ease: "easeOut" },
       }}
     >
-      <div className="flex flex-col">
+      <div className="flex flex-col h-full">
         {/* Header with title and icon - removed chevron */}
-        <div className="flex items-center gap-2 mb-1">
+        <div className="flex items-center gap-3 md:gap-4 mb-2 md:mb-3">
           {(card.type === "experience" || card.type === "certifications" || card.type === "education") &&
           card.imageUrl ? (
             <div
-              className={cn("w-7 h-7 flex items-center justify-center rounded-sm", isXLMedia ? "bg-white p-0.5" : "")}
+              className={cn("w-10 h-10 flex items-center justify-center rounded-sm", isXLMedia ? "bg-white p-0.5" : "")}
             >
               <Image
                 src={card.imageUrl || "/placeholder.svg"}
                 alt={`${card.title} logo`}
-                width={28}
-                height={28}
+                width={40}
+                height={40}
                 className={cn(
                   "object-contain",
                   isXLMedia ? "max-h-6 max-w-6" : "max-h-7 max-w-7",
@@ -123,39 +140,70 @@ export default function CardPreview({ card, onClick, className, style }: CardPre
               {getTypeIcon(card.type)}
             </span>
           )}
-          <h3 className="font-bold text-sm sm:text-base line-clamp-1">{card.title}</h3>
+          <h3 className="font-bold text-base sm:text-lg md:text-xl line-clamp-1">{card.title}</h3>
         </div>
 
         {/* Subtitle and dates - more compact */}
-        <p className="text-xs text-muted-foreground mb-1 line-clamp-1">{card.subtitle}</p>
-        {card.dates && <p className="text-xs text-muted-foreground mb-1 italic line-clamp-1">{card.dates}</p>}
+        <p className="text-sm md:text-base text-muted-foreground mb-2 md:mb-3 line-clamp-1">{card.subtitle}</p>
+        {card.dates && (
+          <p className="text-sm md:text-base text-muted-foreground mb-2 md:mb-3 italic line-clamp-1">{card.dates}</p>
+        )}
 
-        {/* Description - enhanced for experience cards and removed emojis */}
-        <div className="flex-grow mb-2 pr-1 text-xs text-foreground/80 leading-relaxed overflow-y-auto max-h-[150px] scrollbar-thin">
+        {/* Description - enhanced for experience cards with bullet points */}
+        <div className="flex-grow mb-4 md:mb-5 pr-1 text-sm md:text-base text-foreground/80 leading-relaxed overflow-y-auto scrollbar-thin">
           {card.type === "experience" ? (
-            <div className="space-y-1">
-              {card.description.split("\n\n").map((paragraph, i) => (
-                <p key={i} className="whitespace-pre-line">
-                  {removeEmojis(paragraph)}
-                </p>
-              ))}
+            <div className="space-y-3">
+              <AnimatePresence initial={false}>
+                <motion.div
+                  className="space-y-3"
+                  initial={false}
+                  animate={{
+                    height: isExpanded ? "auto" : "200px",
+                    overflow: isExpanded ? "visible" : "hidden",
+                  }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {bulletPoints.map((point, i) => (
+                    <div key={i} className="flex items-start">
+                      <span className="text-primary mr-2 flex-shrink-0 leading-relaxed mt-0.5">•</span>
+                      {point}
+                    </div>
+                  ))}
+                </motion.div>
+              </AnimatePresence>
+
+              {/* Show more/less button for experience cards */}
+              {bulletPoints.length > 2 && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="w-full text-sm flex items-center justify-center gap-1 h-8 mt-2"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setIsExpanded(!isExpanded)
+                  }}
+                >
+                  {isExpanded ? "Show Less" : "Show More"}
+                  <motion.div animate={{ rotate: isExpanded ? 180 : 0 }} transition={{ duration: 0.3 }}>
+                    <ChevronDown className="h-4 w-4" />
+                  </motion.div>
+                </Button>
+              )}
             </div>
           ) : (
-            <p className="line-clamp-3 hover:line-clamp-4 transition-all duration-300">
-              {removeEmojis(card.description.split("\n\n")[0])}
-            </p>
+            <p className="line-clamp-3 hover:line-clamp-4 transition-all duration-300">{bulletPoints[0]}</p>
           )}
         </div>
 
         {/* Tags - show all */}
         <div className="mt-auto pt-1 border-t border-border/30">
           {card.tags && card.tags.length > 0 && (
-            <div className="flex flex-wrap gap-0.5 mb-3">
+            <div className="flex flex-wrap gap-1 md:gap-2 mb-4 md:mb-5">
               {card.tags.map((tag) => (
                 <TagBadge
                   key={tag}
                   label={tag}
-                  className="text-[8px] sm:text-[9px] px-1 py-0 rounded-full border border-border/40 bg-background/50"
+                  className="text-xs sm:text-sm px-2 py-0.5 rounded-full border border-border/40 bg-background/50"
                 />
               ))}
             </div>
@@ -167,10 +215,10 @@ export default function CardPreview({ card, onClick, className, style }: CardPre
               asChild
               variant="outline"
               size="sm"
-              className="w-full text-xs h-6 flex items-center justify-center gap-1 mt-3"
+              className="w-full text-sm md:text-base h-8 md:h-10 flex items-center justify-center gap-1 mt-3"
             >
               <a href={card.link} target="_blank" rel="noopener noreferrer">
-                View <ExternalLink className="h-3 w-3 ml-1" />
+                View <ExternalLink className="h-4 w-4 ml-1" />
               </a>
             </Button>
           )}
