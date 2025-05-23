@@ -10,6 +10,7 @@ export interface CardData {
   tags?: string[]
   link?: string
   imageUrl?: string
+  location?: string
 }
 
 export interface PortfolioData {
@@ -28,6 +29,7 @@ export const portfolioData: PortfolioData = {
       type: "experience",
       title: "Technical Project Manager & Product Owner",
       subtitle: "Noise Digital Inc., Toronto, ON",
+      location: "Toronto, ON",
       dates: "Aug 2024 – Present",
       description:
         "Manage $750K+ Martech and data initiatives for enterprise clients across insurance, healthcare, higher education, finance, advertising, and law sectors—overseeing GTM migrations, GA4 framework builds, and OneTrust consent deployments to ensure GDPR/CCPA compliance and timely delivery.\n\n" +
@@ -58,6 +60,7 @@ export const portfolioData: PortfolioData = {
       type: "experience",
       title: "Technical Project Manager & Product Owner",
       subtitle: "Fourth Dimension Inc., Toronto, ON",
+      location: "Toronto, ON",
       dates: "Mar 2024 – May 2024",
       description:
         "Led a $250K national registry rebuild.\n\n" +
@@ -71,6 +74,7 @@ export const portfolioData: PortfolioData = {
       type: "experience",
       title: "Technical Project Manager & Scrum Master",
       subtitle: "XLMedia Canada Marketing Ltd., Toronto, ON",
+      location: "Toronto, ON",
       dates: "Aug 2023 – Feb 2024",
       description:
         "Directed 3 site migrations and 4 global tech projects.\n\n" +
@@ -84,6 +88,7 @@ export const portfolioData: PortfolioData = {
       type: "experience",
       title: "Project Manager",
       subtitle: "Hotspex Media Inc., Toronto, ON",
+      location: "Toronto, ON",
       dates: "Dec 2021 – Jul 2023",
       description:
         "Oversaw 35+ marketing projects with budgets over $4.5M.\n\n" +

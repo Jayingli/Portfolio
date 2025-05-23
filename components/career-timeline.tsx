@@ -205,13 +205,14 @@ function TimelineItem({ experience, index, isLast }: TimelineItemProps) {
       </div>
 
       {/* Content card */}
-      <div className="bg-card border dark:border-white/10 rounded-lg shadow-sm hover:shadow-md transition-shadow p-8 w-full max-w-5xl">
+      <div className="bg-card border dark:border-white/10 rounded-lg shadow-sm hover:shadow-md transition-shadow p-6 w-full max-w-5xl">
         {/* Header with logo and title */}
-        <div className="flex items-start gap-5 mb-6">
+        <div className="flex flex-col md:flex-row items-start gap-4 md:gap-5 mb-6 relative">
+          {/* Logo section */}
           {experience.imageUrl ? (
             <div
               className={cn(
-                "w-16 h-16 flex items-center justify-center rounded-md overflow-hidden",
+                "w-16 h-16 flex-shrink-0 flex items-center justify-center rounded-md overflow-hidden mb-2 md:mb-0",
                 isXLMedia ? "bg-white p-0.5" : "",
               )}
             >
@@ -224,33 +225,43 @@ function TimelineItem({ experience, index, isLast }: TimelineItemProps) {
               />
             </div>
           ) : (
-            <div className="w-16 h-16 flex items-center justify-center bg-primary/10 rounded-md">
+            <div className="w-16 h-16 flex-shrink-0 flex items-center justify-center bg-primary/10 rounded-md">
               <span className="text-primary font-bold text-2xl">{experience.title.charAt(0)}</span>
             </div>
           )}
 
-          <div className="flex-1">
-            <h3 className="font-bold text-xl mb-1">{experience.title}</h3>
-            <div className="flex items-center gap-3 flex-wrap">
-              <p className="text-base text-muted-foreground">{experience.subtitle}</p>
-              {experience.dates && (
-                <div className="flex items-center text-sm text-muted-foreground">
-                  <span className="inline-block px-2 py-0.5 bg-muted/50 rounded-full">
-                    {getDuration(experience.dates)}
-                  </span>
-                </div>
-              )}
-            </div>
+          {/* Text content */}
+          <div className="flex-1 w-full relative pt-2 md:pt-0">
+            {/* Duration badge - positioned at top right */}
+            {experience.dates && (
+              <div className="absolute top-0 right-0">
+                <span className="inline-block px-3 py-1 bg-muted/50 rounded-full text-sm text-muted-foreground font-medium">
+                  {getDuration(experience.dates)}
+                </span>
+              </div>
+            )}
+
+            {/* Title and company */}
+            <h3 className="font-bold text-xl mb-1.5">{experience.title}</h3>
+            <p className="text-base font-medium text-foreground/80">{experience.subtitle.split(",")[0]}</p>
+
+            {/* Location with icon */}
+            {experience.subtitle.includes(",") && (
+              <div className="flex items-center gap-1.5 text-sm text-muted-foreground mt-2">
+                <MapPin className="h-4 w-4" />
+                <span>{experience.subtitle.split(",")[1].trim()}</span>
+              </div>
+            )}
           </div>
         </div>
 
         {/* Location (extracted from subtitle) */}
-        {experience.subtitle.includes(",") && (
+        {/*{experience.subtitle.includes(",") && (
           <div className="flex items-center gap-2 text-sm text-muted-foreground mb-5">
             <MapPin className="h-4 w-4" />
             <span>{experience.subtitle.split(",")[1].trim()}</span>
           </div>
-        )}
+        )}*/}
 
         {/* Preview of responsibilities */}
         <div className="mb-5">

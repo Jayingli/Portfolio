@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { ChevronDown, ExternalLink } from "lucide-react"
+import { ChevronDown, ExternalLink, MapPin } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
@@ -53,6 +53,12 @@ function getTagPrefix(tag: string): TagPrefix {
   return "Skill:"
 }
 
+// Function to extract location from subtitle if not explicitly provided
+function extractLocation(subtitle: string): string | null {
+  const parts = subtitle.split(",")
+  return parts.length > 1 ? parts[parts.length - 1].trim() : null
+}
+
 export function ExperienceCard({ experience, className }: ExperienceCardProps) {
   const [isExpanded, setIsExpanded] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
@@ -71,6 +77,9 @@ export function ExperienceCard({ experience, className }: ExperienceCardProps) {
   // Check if this is the XLMedia logo (which has a different aspect ratio)
   const isXLMedia = experience.imageUrl?.includes("xlmedia-logo.png")
 
+  // Get location from explicit field or extract from subtitle
+  const location = experience.location || extractLocation(experience.subtitle)
+
   return (
     <motion.div
       className={cn(
@@ -87,33 +96,43 @@ export function ExperienceCard({ experience, className }: ExperienceCardProps) {
       transition={{ duration: 0.3, ease: "easeOut" }}
     >
       <div className="p-4">
-        {/* Top section with logo and title */}
-        <div className="flex items-start gap-3 mb-3">
+        {/* Top section with logo and title - vertically stacked */}
+        <div className="flex flex-col items-start gap-3 mb-3">
           {experience.imageUrl ? (
             <div
               className={cn(
-                "w-10 h-10 flex items-center justify-center rounded-md overflow-hidden",
+                "w-12 h-12 flex items-center justify-center rounded-md overflow-hidden",
                 isXLMedia ? "bg-white p-0.5" : "",
               )}
             >
               <Image
                 src={experience.imageUrl || "/placeholder.svg"}
                 alt={`${experience.title} logo`}
-                width={40}
-                height={40}
-                className="object-contain max-h-10 max-w-10"
+                width={48}
+                height={48}
+                className="object-contain max-h-12 max-w-12"
               />
             </div>
           ) : (
-            <div className="w-10 h-10 flex items-center justify-center bg-primary/10 rounded-md">
+            <div className="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-md">
               <span className="text-primary font-bold text-lg">{experience.title.charAt(0)}</span>
             </div>
           )}
 
-          <div className="flex-1">
-            <h3 className="font-bold text-base line-clamp-1">{experience.title}</h3>
-            <p className="text-sm text-muted-foreground line-clamp-1">{experience.subtitle}</p>
-            {experience.dates && <p className="text-xs text-muted-foreground italic mt-0.5">{experience.dates}</p>}
+          <div className="w-full">
+            <h3 className="font-bold text-base">{experience.title}</h3>
+            <p className="text-sm text-muted-foreground">{experience.subtitle}</p>
+
+            {/* Location and duration on the same line, spaced apart */}
+            <div className="flex justify-between items-center mt-1 w-full">
+              {location && (
+                <p className="text-xs text-muted-foreground flex items-center">
+                  <MapPin className="h-3 w-3 mr-1" />
+                  {location}
+                </p>
+              )}
+              {experience.dates && <p className="text-xs text-muted-foreground italic">{experience.dates}</p>}
+            </div>
           </div>
         </div>
 
