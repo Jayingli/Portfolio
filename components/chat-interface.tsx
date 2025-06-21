@@ -689,7 +689,6 @@ export function ChatInterface({ portfolioData }: ChatInterfaceProps) {
                           duration: 0.4,
                           ease: "easeOut",
                         }}
-                        layoutId={`message-bubble-${message.id}`}
                       >
                         <div className="flex flex-col gap-2">
                           {message.isAiResponse ? (
