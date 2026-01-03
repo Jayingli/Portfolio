@@ -105,17 +105,9 @@ export function ChatInterface({ portfolioData }: ChatInterfaceProps) {
         },
       ])
 
+      // REMOVED DUPLICATE FOLLOW-UP MESSAGE - IT'S ALREADY HANDLED BY useEffect BELOW
       // Show follow-up after delay
       setTimeout(() => {
-        setMessages((prev) => [
-          ...prev,
-          {
-            id: "follow-up",
-            content: "",
-            sender: "bot",
-            isFollowUp: true,
-          },
-        ])
         setShowFollowUp(true)
       }, 3000)
     } else {
@@ -268,7 +260,8 @@ export function ChatInterface({ portfolioData }: ChatInterfaceProps) {
 
   // Show follow-up message after 3 seconds (only in explore mode)
   useEffect(() => {
-    if (chatMode === "explore") {
+    if (chatMode === "explore" && !messages.some((msg) => msg.isFollowUp)) {
+      // Check if follow-up is not already rendered
       const timer = setTimeout(() => {
         setMessages((prev) => [
           ...prev,
@@ -284,7 +277,7 @@ export function ChatInterface({ portfolioData }: ChatInterfaceProps) {
 
       return () => clearTimeout(timer)
     }
-  }, [chatMode])
+  }, [chatMode, messages]) // Depend on messages to re-evaluate if follow-up is needed
 
   // Scroll to the active card when it changes, but only after initial load and with a delay
   useEffect(() => {

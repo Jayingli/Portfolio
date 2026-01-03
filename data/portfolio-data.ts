@@ -282,6 +282,78 @@ export const portfolioData: PortfolioData = {
   ],
   projects: [
     {
+      id: "proj-elixir1",
+      type: "projects",
+      title: "Elixir1 Skincare Clinic - Medical Aesthetics Website",
+      subtitle: "Client Project | Full Service Web Development",
+      dates: "2025",
+      description:
+        "Led the project from brand strategy through design and development for a luxury medical aesthetics clinic.\n\n" +
+        "Defined a luxury brand identity with a gold and dark palette reflecting premium services.\n\n" +
+        "Integrated booking and VISIA skin analysis systems seamlessly for client convenience.\n\n" +
+        "Built mobile-first responsive design with service pages featuring detailed treatment descriptions and brand partners.",
+      tags: [
+        "Web Design",
+        "Brand Strategy",
+        "Next.js",
+        "Booking Integration",
+        "Responsive Design",
+        "UX/UI",
+        "Medical Aesthetics",
+      ],
+      link: "https://www.elixir1.ca/",
+    },
+    {
+      id: "proj-browfix",
+      type: "projects",
+      title: "BrowFix - Premium Beauty Services Booking Platform",
+      subtitle: "Client Project | Full Service Web Development",
+      dates: "2025",
+      description:
+        "Led the project from brand strategy through design and development for a premium brow and lash beauty service.\n\n" +
+        "Defined a clean, modern brand identity with soft pink accent palette.\n\n" +
+        "Integrated seamless booking system for brow and lash appointments with treatment details.\n\n" +
+        "Built professional gallery showcasing before/after results with optimized mobile loading and local SEO.",
+      tags: ["Web Design", "Brand Strategy", "Booking System", "Responsive Design", "Beauty Services", "UX/UI", "SEO"],
+      link: "https://browfix.ca/",
+    },
+    {
+      id: "proj-macafe",
+      type: "projects",
+      title: "M&A Cafe - Artisanal Coffee Shop Experience",
+      subtitle: "Client Project | Full Service Web Development",
+      dates: "2025",
+      description:
+        "Led the project from brand strategy through design and development for an artisanal coffee shop.\n\n" +
+        "Defined a warm, artisanal brand identity with sophisticated gold accents and compelling storytelling.\n\n" +
+        "Integrated online ordering system with Uber Eats connectivity for seamless delivery.\n\n" +
+        "Created gallery showcase highlighting coffee craftsmanship with mobile-optimized design for on-the-go ordering.",
+      tags: [
+        "Web Design",
+        "Brand Strategy",
+        "E-commerce",
+        "Uber Eats Integration",
+        "Responsive Design",
+        "Food & Beverage",
+        "UX/UI",
+      ],
+      link: "https://macafeto.ca/",
+    },
+    {
+      id: "proj-drcat",
+      type: "projects",
+      title: "Dr. Cat Wellness - Therapeutic Massage Services",
+      subtitle: "Client Project | Full Service Web Development",
+      dates: "2025",
+      description:
+        "Built a calming, professional website for a therapeutic massage practice focused on human touch and healing.\n\n" +
+        "Designed a serene interface reflecting the healing philosophy with intuitive service exploration.\n\n" +
+        "Integrated booking system for multiple massage modalities including Swedish, Deep Tissue, Thai, and Prenatal.\n\n" +
+        "Created detailed service descriptions with pricing, benefits, and optional enhancements for personalized care.",
+      tags: ["Web Design", "Booking System", "Wellness Services", "Responsive Design", "UX/UI", "Healthcare", "SEO"],
+      link: "https://www.drcatwellness.com/",
+    },
+    {
       id: "proj-tarot",
       type: "projects",
       title: "Tarot Card Reader - Interactive Web Application",
