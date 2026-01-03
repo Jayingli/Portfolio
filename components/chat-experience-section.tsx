@@ -10,10 +10,25 @@ import type { CardData } from "@/data/portfolio-data"
 interface ChatExperienceSectionProps {
   experiences: CardData[]
   className?: string
+  hidePagination?: boolean
+  onCardClick?: (card: CardData) => void
 }
 
-export function ChatExperienceSection({ experiences, className }: ChatExperienceSectionProps) {
+export function ChatExperienceSection({
+  experiences,
+  className,
+  hidePagination = false,
+  onCardClick,
+}: ChatExperienceSectionProps) {
   const [currentView, setCurrentView] = useState<"carousel" | "timeline">("carousel")
+
+  const handleCardClick = (card: CardData) => {
+    if (onCardClick) {
+      onCardClick(card)
+    } else {
+      window.dispatchEvent(new CustomEvent("cardClick", { detail: card }))
+    }
+  }
 
   return (
     <motion.div
@@ -25,10 +40,7 @@ export function ChatExperienceSection({ experiences, className }: ChatExperience
       <ExperienceViewToggle currentView={currentView} onViewChange={setCurrentView} className="mb-4" />
 
       {currentView === "carousel" ? (
-        <CardCarousel
-          cards={experiences}
-          onCardClick={(card) => window.dispatchEvent(new CustomEvent("cardClick", { detail: card }))}
-        />
+        <CardCarousel cards={experiences} onCardClick={handleCardClick} hidePagination={hidePagination} />
       ) : (
         <CareerTimeline experiences={experiences} />
       )}

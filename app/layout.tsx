@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   title: "Jay Li - Technical Project Manager",
   description:
     "Interactive portfolio of Jay Li, Technical Project Manager with expertise in Agile, Scrum, and technical project delivery",
-    generator: 'v0.dev'
+    generator: 'v0.app'
 }
 
 export default function RootLayout({

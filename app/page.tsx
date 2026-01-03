@@ -26,7 +26,7 @@ export default function Home() {
         <div className="absolute left-0 bottom-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-border/20 to-transparent"></div>
       </header>
 
-      <div className="container flex-1 pb-0 flex flex-col justify-end px-1 sm:px-4">
+      <div className="container flex-1 pb-0 flex flex-col px-1 sm:px-4">
         <ChatInterface portfolioData={portfolioData} />
       </div>
     </main>

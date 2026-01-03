@@ -27,33 +27,55 @@ export const portfolioData: PortfolioData = {
     {
       id: "exp0",
       type: "experience",
-      title: "Technical Project Manager & Product Owner",
+      title: "Technical Project Manager & Scrum Master",
       subtitle: "Noise Digital Inc., Toronto, ON",
       location: "Toronto, ON",
-      dates: "Aug 2024 – Present",
+      dates: "Aug 2024 – Oct 2025",
       description:
-        "Manage $750K+ Martech and data initiatives for enterprise clients across insurance, healthcare, higher education, finance, advertising, and law sectors—overseeing GTM migrations, GA4 framework builds, and OneTrust consent deployments to ensure GDPR/CCPA compliance and timely delivery.\n\n" +
-        "Own end-to-end delivery of 10+ active projects across Agile and Waterfall life cycles, including SOW creation, sprint planning, stakeholder alignment, QA coordination, and production handoff.\n\n" +
-        "Translate business objectives into technical specifications for GA4 event tracking, BigQuery-based CDMPs, and consent management workflows; bridge gaps between legal, engineering, and marketing teams to streamline execution.\n\n" +
-        "Develop and maintain project documentation including RAID logs, test plans, and dataLayer schemas; lead weekly standups and status calls to drive clarity across distributed teams.\n\n" +
-        "Proactively identify and manage 30+ project risks such as data pipeline delays, GTM code conflicts, and inconsistent taxonomies; implement mitigation plans to minimize delivery disruption.\n\n" +
-        "Lead project communications and client-facing deliverables, including technical briefs, QA summary reports, and post-implementation support plans; secure stakeholder buy-in for key changes such as schema redesigns and container rebuilds.\n\n" +
-        "Coordinate full project lifecycle from scoping to invoicing, working closely with analytics leads, engineering resources, clients, and third-party vendors.",
+        "Lead $750K+ portfolio of SaaS, automation, and data infrastructure projects across tagging, consent/privacy, and platform rollouts for clients in finance, healthcare, education, and retail, including treasury, reporting, and data-governance initiatives that required close coordination with internal stakeholders and hybrid Agile delivery.\n\n" +
+        "Run hybrid Agile delivery across selected workstreams, acting as Scrum Master for stand-ups, sprint planning, backlog refinement, and release checkpoints.\n\n" +
+        "Coordinate cross-functional teams (engineering, analytics, product, marketing) to deliver scalable programs from scoping to launch.\n\n" +
+        "Track delivery using RAID logs and dashboards, flagging risks and surfacing blockers for leadership decision-making.\n\n" +
+        "Partner with clients to align priorities, drive approvals, and integrate feedback loops post-launch.\n\n" +
+        "Support data governance and integration planning to enable reporting consistency and future-proof architecture.\n\n" +
+        "Develop QA plans, change-readiness comms, and support documentation to drive adoption.",
       tags: [
+        "Scrum Master",
         "Agile",
-        "Waterfall",
-        "Martech",
-        "GA4",
-        "GTM",
-        "BigQuery",
-        "OneTrust",
-        "GDPR/CCPA",
-        "SOW",
-        "RAID",
+        "Hybrid Delivery",
+        "SaaS",
+        "Data Infrastructure",
+        "RAID Logs",
+        "Sprint Planning",
+        "Backlog Refinement",
         "Stakeholder Management",
-        "Technical Documentation",
+        "Data Governance",
+        "QA",
+        "Cross-functional Teams",
       ],
       imageUrl: "/images/noise-logo.png",
+    },
+    {
+      id: "exp-sitesbyjay",
+      type: "experience",
+      title: "Founder & Full Stack Consultant",
+      subtitle: "Sites By Jay Li, Toronto, ON",
+      location: "Toronto, ON",
+      dates: "Jul 2025 – Present",
+      description:
+        "Run a self-directed web consultancy delivering custom sites and CMS solutions for small businesses.\n\n" +
+        "Lead full-stack builds, integrations (e.g. GA4, CRM, payments), and ongoing strategy to support growth and data-driven operations.\n\n" +
+        "Manage complete ownership of scoping, delivery, and client expectations to navigate ambiguity and protect delivery pace.",
+      tags: [
+        "Full Stack",
+        "Web Development",
+        "CMS",
+        "GA4",
+        "CRM Integration",
+        "Payments",
+        "Client Management",
+        "Small Business",
+      ],
     },
     {
       id: "exp1",
@@ -63,10 +85,9 @@ export const portfolioData: PortfolioData = {
       location: "Toronto, ON",
       dates: "Mar 2024 – May 2024",
       description:
-        "Led a $250K national registry rebuild.\n\n" +
-        "Delivered backend, UI, and secure Stripe integration using ShadCN.\n\n" +
-        "Implemented schema restructuring, SQL-to-NoSQL migration, message queuing, and real-time analytics tools.",
-      tags: ["Product Owner", "Full Stack", "Stripe", "REST API", "ShadCN", "SQL", "NoSQL", "System Design"],
+        "Delivered $250K Agile rebuild of national registry platform, improving security, speed, and UX.\n\n" +
+        "Owned backlog, sprint cadence, and roadmap planning across full-stack teams (ShadCN, Node, Stripe, analytics).",
+      tags: ["Product Owner", "Agile", "Full Stack", "Stripe", "REST API", "ShadCN", "SQL", "NoSQL", "System Design"],
       imageUrl: "/images/4d-logo.png",
     },
     {
@@ -77,10 +98,19 @@ export const portfolioData: PortfolioData = {
       location: "Toronto, ON",
       dates: "Aug 2023 – Feb 2024",
       description:
-        "Directed 3 site migrations and 4 global tech projects.\n\n" +
-        "Boosted sprint velocity by 33%, streamlined processes, and aligned roadmaps with business goals.\n\n" +
-        "Deployed Monday.com for global PM visibility.",
-      tags: ["Agile", "Scrum", "Monday.com", "SEO", "Roadmapping", "UX/UI", "Global Teams"],
+        "Facilitated Scrum ceremonies and Agile delivery for 3 site migrations and 4 high-impact mobile and web builds with distributed teams across the UK, MX, US, and CA.\n\n" +
+        "Managed dependencies between PMO, SEO, engineering, content, and UX; tracked work in JIRA, Confluence, and shared dashboards to maintain delivery momentum and transparency.\n\n" +
+        "Led release planning, coordinated defect triage, and aligned testing across multiple time zones.",
+      tags: [
+        "Scrum Master",
+        "Agile",
+        "JIRA",
+        "Confluence",
+        "SEO",
+        "Release Planning",
+        "Global Teams",
+        "Site Migration",
+      ],
       imageUrl: "/images/xlmedia-logo.png",
     },
     {
@@ -91,9 +121,17 @@ export const portfolioData: PortfolioData = {
       location: "Toronto, ON",
       dates: "Dec 2021 – Jul 2023",
       description:
-        "Oversaw 35+ marketing projects with budgets over $4.5M.\n\n" +
-        "Increased stakeholder satisfaction by 16% through improved reporting and KPI tracking across Meta, TikTok, LinkedIn, and Google Ads campaigns.",
-      tags: ["Media", "Digital Marketing", "Reporting", "KPI", "PowerBI", "Looker Studio", "Paid Media"],
+        "Delivered 35+ concurrent digital initiatives ($4.5M+) in a fast-paced agency setting, covering analytics, paid media, and marketing automation—consistently meeting scope, schedule, and quality targets.\n\n" +
+        "Coordinated QA, reporting, and campaign optimization using A/B testing frameworks and performance dashboards.",
+      tags: [
+        "Digital Marketing",
+        "Analytics",
+        "Paid Media",
+        "A/B Testing",
+        "Performance Dashboards",
+        "Marketing Automation",
+        "KPI",
+      ],
       imageUrl: "/images/hotspex-logo.png",
     },
   ],
@@ -101,96 +139,145 @@ export const portfolioData: PortfolioData = {
     {
       id: "skill1",
       type: "skills",
-      title: "Project & Product Management",
+      title: "Project Delivery & Governance",
       subtitle: "Expert",
       description:
         "🧩 Core Skills\n" +
-        "Technical Project Management, Product Ownership, Agile, Scrum, Waterfall, Kanban, SDLC, PMLC, MoSCoW, RICE\n\n" +
+        "Project plans, timelines, RAID logs, scope & change control, dependency & risk management, dashboards, status reporting, resource coordination\n\n" +
         "🔧 Applications\n" +
-        "• Roadmapping & Strategic Planning\n" +
-        "• SOW & Requirements Gathering\n" +
-        "• Sprint Planning & Retrospectives\n" +
-        "• Budgeting & Cost Control\n" +
-        "• Risk & Issue Management\n" +
-        "• Change Management\n" +
-        "• Stakeholder Engagement\n" +
-        "• Vendor Management & Procurement\n" +
-        "• Cross-Functional Team Leadership\n\n" +
+        "• End-to-end project lifecycle management\n" +
+        "• Risk identification and mitigation planning\n" +
+        "• Stakeholder alignment and communication\n" +
+        "• Cross-functional team coordination\n" +
+        "• Budget tracking and invoicing\n\n" +
         "🎯 Focus Areas\n" +
-        "• Technical delivery in marketing & analytics\n" +
-        "• Agile transformation\n" +
-        "• Stakeholder alignment",
+        "• Large-scale digital and SaaS initiatives\n" +
+        "• Enterprise and financial clients\n" +
+        "• Data-driven project delivery",
       tags: [
-        "Project Management",
-        "Product Ownership",
-        "Agile",
-        "Scrum",
-        "Roadmapping",
-        "Requirements",
-        "Stakeholder Management",
+        "Project Plans",
+        "RAID Logs",
+        "Risk Management",
+        "Change Control",
+        "Dashboards",
+        "Status Reporting",
+        "Resource Coordination",
       ],
     },
     {
       id: "skill2",
       type: "skills",
-      title: "Tools & Platforms",
-      subtitle: "Advanced",
+      title: "Agile & Hybrid Delivery",
+      subtitle: "Expert",
       description:
         "🧩 Core Skills\n" +
-        "Jira, Asana, Monday.com, Teamwork, Airtable, Microsoft Office, Google Workspace, CODA, Figma, Miro, Mural\n\n" +
-        "🔧 Applications\n" +
-        "• Project tracking & workflow management\n" +
-        "• Documentation & knowledge sharing\n" +
-        "• Design collaboration & prototyping\n" +
-        "• Data visualization & reporting\n" +
-        "• Team communication & coordination\n\n" +
+        "Scrum, Kanban, sprint planning, stand-ups, retros, backlog refinement, story writing\n\n" +
+        "🔧 Tools\n" +
+        "• Jira, Confluence, Azure DevOps\n" +
+        "• Asana, Monday.com, Trello\n\n" +
         "🎯 Focus Areas\n" +
-        "• Workflow optimization\n" +
-        "• Cross-tool integration\n" +
-        "• Process automation",
-      tags: ["Jira", "Asana", "Monday.com", "Figma", "Miro", "Power BI", "Looker Studio"],
+        "• Hybrid Agile delivery for enterprise clients\n" +
+        "• Scrum Master facilitation\n" +
+        "• Program coordination across global teams",
+      tags: [
+        "Scrum",
+        "Kanban",
+        "Sprint Planning",
+        "Backlog Refinement",
+        "Jira",
+        "Confluence",
+        "Azure DevOps",
+        "Asana",
+        "Monday.com",
+      ],
     },
     {
       id: "skill3",
       type: "skills",
-      title: "Software Engineering Skills",
-      subtitle: "Intermediate",
+      title: "Finance & Data Exposure",
+      subtitle: "Advanced",
       description:
         "🧩 Core Skills\n" +
-        "HTML, CSS, JavaScript, React.js, Node.js, Express.js, REST APIs, MySQL, NoSQL, AWS\n\n" +
-        "🔧 Applications\n" +
-        "• Frontend development with React\n" +
-        "• API integration & authentication\n" +
-        "• Database schema design\n" +
-        "• Testing & debugging\n" +
-        "• Version control with Git\n" +
-        "• Deployment workflows\n\n" +
+        "Data flow mapping, reporting pipelines, treasury & accounting workflows, consent & privacy requirements\n\n" +
+        "🔧 Tools\n" +
+        "• GA4, Power BI, Looker Studio\n" +
+        "• BigQuery, Data Governance\n\n" +
         "🎯 Focus Areas\n" +
-        "• Technical feasibility assessment\n" +
-        "• Developer collaboration\n" +
-        "• Code quality standards",
-      tags: ["JavaScript", "React", "Node.js", "REST API", "MySQL", "NoSQL", "Testing"],
+        "• Treasury and reporting initiatives\n" +
+        "• GDPR/CCPA compliance\n" +
+        "• Data-driven decision making",
+      tags: [
+        "Data Flow Mapping",
+        "Reporting Pipelines",
+        "Treasury",
+        "GA4",
+        "Power BI",
+        "Looker Studio",
+        "GDPR",
+        "CCPA",
+      ],
     },
     {
       id: "skill4",
       type: "skills",
-      title: "Product Management & UX",
+      title: "Collaboration & Productivity",
+      subtitle: "Expert",
+      description:
+        "🧩 Core Skills\n" +
+        "Cross-functional team leadership, stakeholder communication, documentation, knowledge sharing\n\n" +
+        "🔧 Tools\n" +
+        "• Microsoft 365, Google Workspace\n" +
+        "• Smartsheet, Notion, Slack, Zoom\n" +
+        "• Miro, Lucid\n\n" +
+        "🎯 Focus Areas\n" +
+        "• Remote and distributed team coordination\n" +
+        "• Clear communication across all levels\n" +
+        "• Fostering collaboration between engineering, product, and business teams",
+      tags: ["Microsoft 365", "Google Workspace", "Smartsheet", "Notion", "Slack", "Miro", "Lucid", "Team Leadership"],
+    },
+    {
+      id: "skill5",
+      type: "skills",
+      title: "Data & Tagging",
       subtitle: "Advanced",
       description:
         "🧩 Core Skills\n" +
-        "Product Strategy, Market Research, User Research, Wireframing, Prototyping, Usability Testing, Analytics\n\n" +
-        "🔧 Applications\n" +
-        "• Product-market fit analysis\n" +
-        "• MVP definition & roadmapping\n" +
-        "• User personas & journey mapping\n" +
-        "• PRDs & user stories\n" +
-        "• A/B testing & feature validation\n" +
-        "• KPI tracking & optimization\n\n" +
+        "Supporting reporting needs through tagging infrastructure and analytics implementation\n\n" +
+        "🔧 Tools\n" +
+        "• Google Tag Manager, Meta Pixel, Floodlight\n" +
+        "• Consent Mode, CAPI, Segment\n" +
+        "• Google Ads, Meta Ads, LinkedIn Ads, TikTok Ads\n\n" +
         "🎯 Focus Areas\n" +
-        "• User-centered design\n" +
-        "• Data-driven decision making\n" +
-        "• Cross-functional collaboration",
-      tags: ["Product Strategy", "MVPs", "Wireframing", "Usability Testing", "Personas", "Analytics", "User Stories"],
+        "• GTM migrations and framework builds\n" +
+        "• Consent management deployments\n" +
+        "• Analytics platform rollouts",
+      tags: [
+        "Google Tag Manager",
+        "Meta Pixel",
+        "Floodlight",
+        "Consent Mode",
+        "CAPI",
+        "Segment",
+        "Google Ads",
+        "Meta Ads",
+      ],
+    },
+    {
+      id: "skill6",
+      type: "skills",
+      title: "Testing & QA Tools",
+      subtitle: "Intermediate",
+      description:
+        "🧩 Core Skills\n" +
+        "QA coordination, test plan development, debugging, performance monitoring\n\n" +
+        "🔧 Tools\n" +
+        "• ObservePoint, Lighthouse, Chrome DevTools\n" +
+        "• Hotjar, GA Debugger\n\n" +
+        "🎯 Focus Areas\n" +
+        "• QA plans and change-readiness documentation\n" +
+        "• Defect triage and testing coordination\n" +
+        "• Performance optimization",
+      tags: ["ObservePoint", "Lighthouse", "Chrome DevTools", "Hotjar", "GA Debugger", "QA", "Testing"],
     },
   ],
   projects: [
@@ -302,6 +389,16 @@ export const portfolioData: PortfolioData = {
     },
   ],
   certifications: [
+    {
+      id: "cert-acp",
+      type: "certifications",
+      title: "Agile Certified Practitioner (PMI-ACP)",
+      subtitle: "Project Management Institute (PMI)",
+      dates: "Expected Feb 2026",
+      description:
+        "Currently pursuing PMI-ACP certification to validate expertise in Agile principles and practices. This certification demonstrates knowledge of Agile methodologies including Scrum, Kanban, Lean, and XP across various project types.",
+      tags: ["Agile", "PMI", "Scrum", "Kanban", "Lean", "Project Management"],
+    },
     {
       id: "cert0",
       type: "certifications",

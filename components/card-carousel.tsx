@@ -14,9 +14,10 @@ interface CardCarouselProps {
   cards: CardData[]
   onCardClick: (card: CardData) => void
   className?: string
+  hidePagination?: boolean
 }
 
-export function CardCarousel({ cards, onCardClick, className }: CardCarouselProps) {
+export function CardCarousel({ cards, onCardClick, className, hidePagination = false }: CardCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const carouselRef = useRef<HTMLDivElement>(null)
   const { isMobile, isTablet, isDesktop } = useMobile()
@@ -223,50 +224,52 @@ export function CardCarousel({ cards, onCardClick, className }: CardCarouselProp
       </div>
 
       {/* Navigation controls - make more visible with increased spacing */}
-      <div className="flex justify-center items-center gap-2 mt-4 mb-4">
-        <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} transition={{ duration: 0.15 }}>
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={handlePrevious}
-            disabled={safeCurrentIndex === 0}
-            className="h-8 w-8 rounded-full"
-          >
-            <ChevronLeft className="h-4 w-4" />
-            <span className="sr-only">Previous</span>
-          </Button>
-        </motion.div>
+      {!hidePagination && (
+        <div className="flex justify-center items-center gap-2 mt-4 mb-4">
+          <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} transition={{ duration: 0.15 }}>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={handlePrevious}
+              disabled={safeCurrentIndex === 0}
+              className="h-8 w-8 rounded-full bg-transparent"
+            >
+              <ChevronLeft className="h-4 w-4" />
+              <span className="sr-only">Previous</span>
+            </Button>
+          </motion.div>
 
-        {/* Visual indicators - make more visible */}
-        <div className="flex justify-center items-center gap-2">
-          {cards.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentIndex(index)}
-              className={cn(
-                "w-2 h-2 rounded-full transition-all",
-                index === safeCurrentIndex
-                  ? "bg-primary scale-125"
-                  : "bg-muted-foreground/30 hover:bg-muted-foreground/50",
-              )}
-              aria-label={`Go to card ${index + 1}`}
-            />
-          ))}
+          {/* Visual indicators - make more visible */}
+          <div className="flex justify-center items-center gap-2">
+            {cards.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentIndex(index)}
+                className={cn(
+                  "w-2 h-2 rounded-full transition-all",
+                  index === safeCurrentIndex
+                    ? "bg-primary scale-125"
+                    : "bg-muted-foreground/30 hover:bg-muted-foreground/50",
+                )}
+                aria-label={`Go to card ${index + 1}`}
+              />
+            ))}
+          </div>
+
+          <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} transition={{ duration: 0.15 }}>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={handleNext}
+              disabled={safeCurrentIndex === cards.length - 1}
+              className="h-8 w-8 rounded-full bg-transparent"
+            >
+              <ChevronRight className="h-4 w-4" />
+              <span className="sr-only">Next</span>
+            </Button>
+          </motion.div>
         </div>
-
-        <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} transition={{ duration: 0.15 }}>
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={handleNext}
-            disabled={safeCurrentIndex === cards.length - 1}
-            className="h-8 w-8 rounded-full"
-          >
-            <ChevronRight className="h-4 w-4" />
-            <span className="sr-only">Next</span>
-          </Button>
-        </motion.div>
-      </div>
+      )}
     </div>
   )
 }

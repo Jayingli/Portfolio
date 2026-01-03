@@ -1,43 +1,71 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { Send } from "lucide-react"
-import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+
+import { useState, useRef, useEffect, useCallback } from "react"
+import type { Message } from "ai"
+import { ChatSuggestions } from "@/components/chat-suggestions"
+import { Button } from "@/components/ui/button"
+import { Sparkles, ArrowRight, Map, Send } from "lucide-react"
+import { AnimatePresence, motion } from "framer-motion"
+import { useToast } from "@/hooks/use-toast"
+import { Avatar } from "@/components/ui/avatar"
+import { AvatarFallback } from "@/components/avatar-fallback"
+import { TypingIndicator } from "@/components/typing-indicator"
+import { ChatExperienceSection } from "@/components/chat-experience-section"
 import { CardCarousel } from "@/components/card-carousel"
 import CardExpanded from "@/components/card-expanded"
 import type { PortfolioData, CardType, CardData } from "@/data/portfolio-data"
-import { ChatSuggestions } from "@/components/chat-suggestions"
 import { useMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 import { customResponses } from "@/data/custom-responses"
-import { motion, AnimatePresence } from "framer-motion"
-import { TypingIndicator } from "@/components/typing-indicator"
-import { AvatarFallback } from "@/components/avatar-fallback"
-import { ChatExperienceSection } from "@/components/chat-experience-section"
 
-interface Message {
-  id: string
-  content: string
-  sender: "user" | "bot"
-  cardType?: CardType
-  isFollowUp?: boolean
-  isAiResponse?: boolean
-}
+// Removed redundant 'interface Message' definition here as it's likely shadowed by the import from 'ai'
+// If the imported 'Message' from 'ai' is insufficient, a different name should be used, e.g., 'ChatMessage'
 
 interface ChatInterfaceProps {
   portfolioData: PortfolioData
 }
 
+const journeySteps: { topic: CardType; question: string; intro: string }[] = [
+  {
+    topic: "experience",
+    question: "Tell me about your work experience",
+    intro: "Let's start with my professional journey. Here's where I've worked and what I've accomplished:",
+  },
+  {
+    topic: "skills",
+    question: "What are your key skills?",
+    intro: "Throughout my career, I've developed a diverse set of skills. Here's what I bring to the table:",
+  },
+  {
+    topic: "projects",
+    question: "Show me your projects",
+    intro: "I love building things. Here are some projects I'm proud of:",
+  },
+  {
+    topic: "certifications",
+    question: "What certifications do you have?",
+    intro: "Continuous learning is important to me. Here are my certifications:",
+  },
+  {
+    topic: "education",
+    question: "Tell me about your education",
+    intro: "Here's my educational background:",
+  },
+  {
+    topic: "volunteering",
+    question: "What community involvement do you have?",
+    intro: "Giving back to the community matters to me. Here's how I've contributed:",
+  },
+]
+
 export function ChatInterface({ portfolioData }: ChatInterfaceProps) {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: "1",
-      content:
-        "Hi there! I'm Jay—welcome to my interactive portfolio.\nYou can ask about my experience, skills, projects, certifications, education, or community involvement—or just click a quick prompt below to get started.\n\nCurious about what I've built, where I've studied, or how I've made an impact? Just ask.",
-      sender: "bot",
-    },
-  ])
+  const [chatMode, setChatMode] = useState<"selecting" | "explore" | "journey" | null>(null)
+  const [journeyStep, setJourneyStep] = useState(0)
+  const [isJourneyComplete, setIsJourneyComplete] = useState(false)
+
+  const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState("")
   const [activeSection, setActiveSection] = useState<CardType | null>(null)
   const [selectedCard, setSelectedCard] = useState<CardData | null>(null)
@@ -53,7 +81,120 @@ export function ChatInterface({ portfolioData }: ChatInterfaceProps) {
   const [showFollowUp, setShowFollowUp] = useState(false)
   const [initialLoadComplete, setInitialLoadComplete] = useState(false)
   const [inputAreaHeight, setInputAreaHeight] = useState(0)
-  const [useAI, setUseAI] = useState(true) // Enable AI responses by default
+  const [useAI, setUseAI] = useState(true)
+  const { toast } = useToast()
+  const [isSpeaking, setIsSpeaking] = useState(false)
+  const speechSynthesisRef = useRef<SpeechSynthesis | null>(null)
+  const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null)
+
+  useEffect(() => {
+    setChatMode("selecting")
+  }, [])
+
+  const handleModeSelect = (mode: "explore" | "journey") => {
+    setChatMode(mode)
+
+    if (mode === "explore") {
+      // Free exploration mode - show welcome message
+      setMessages([
+        {
+          id: "1",
+          content:
+            "Hi there! I'm Jay—welcome to my interactive portfolio.\nYou can ask about my experience, skills, projects, certifications, education, or community involvement—or just click a quick prompt below to get started.\n\nCurious about what I've built, where I've studied, or how I've made an impact? Just ask.",
+          sender: "bot",
+        },
+      ])
+
+      // Show follow-up after delay
+      setTimeout(() => {
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: "follow-up",
+            content: "",
+            sender: "bot",
+            isFollowUp: true,
+          },
+        ])
+        setShowFollowUp(true)
+      }, 3000)
+    } else {
+      // Guided journey mode - start the tour
+      startJourney()
+    }
+  }
+
+  const startJourney = () => {
+    const firstStep = journeySteps[0]
+    setMessages([
+      {
+        id: "journey-intro",
+        content:
+          "Welcome! Let me take you through my professional journey. I'll walk you through my experience, skills, projects, and more. Let's begin!",
+        sender: "bot",
+      },
+    ])
+
+    setTimeout(() => {
+      setIsTyping(true)
+      setTimeout(() => {
+        setIsTyping(false)
+        setActiveSection(firstStep.topic)
+        setExploredTopics(new Set([firstStep.topic]))
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: `journey-${firstStep.topic}`,
+            content: firstStep.intro,
+            sender: "bot",
+            cardType: firstStep.topic,
+          },
+        ])
+      }, 1200)
+    }, 1500)
+  }
+
+  const continueJourney = () => {
+    const nextStepIndex = journeyStep + 1
+
+    if (nextStepIndex >= journeySteps.length) {
+      // Journey complete
+      setIsJourneyComplete(true)
+      setIsTyping(true)
+      setTimeout(() => {
+        setIsTyping(false)
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: "journey-complete",
+            content:
+              "That's my story! Thanks for taking the time to learn about me. Feel free to ask any questions or explore more on your own.",
+            sender: "bot",
+          },
+        ])
+      }, 1200)
+      return
+    }
+
+    setJourneyStep(nextStepIndex)
+    const nextStep = journeySteps[nextStepIndex]
+
+    setIsTyping(true)
+    setTimeout(() => {
+      setIsTyping(false)
+      setActiveSection(nextStep.topic)
+      setExploredTopics((prev) => new Set([...prev, nextStep.topic]))
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `journey-${nextStep.topic}`,
+          content: nextStep.intro,
+          sender: "bot",
+          cardType: nextStep.topic,
+        },
+      ])
+    }, 1200)
+  }
 
   // Calculate the height of the fixed bottom section (suggestions + input)
   const bottomSectionHeight = isMobile ? 120 : 160
@@ -125,23 +266,25 @@ export function ChatInterface({ portfolioData }: ChatInterfaceProps) {
     return () => clearTimeout(timer)
   }, [])
 
-  // Show follow-up message after 3 seconds
+  // Show follow-up message after 3 seconds (only in explore mode)
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: "follow-up",
-          content: "", // Content will be rendered directly in the component
-          sender: "bot",
-          isFollowUp: true,
-        },
-      ])
-      setShowFollowUp(true)
-    }, 3000)
+    if (chatMode === "explore") {
+      const timer = setTimeout(() => {
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: "follow-up",
+            content: "", // Content will be rendered directly in the component
+            sender: "bot",
+            isFollowUp: true,
+          },
+        ])
+        setShowFollowUp(true)
+      }, 3000)
 
-    return () => clearTimeout(timer)
-  }, [])
+      return () => clearTimeout(timer)
+    }
+  }, [chatMode])
 
   // Scroll to the active card when it changes, but only after initial load and with a delay
   useEffect(() => {
@@ -205,6 +348,57 @@ export function ChatInterface({ portfolioData }: ChatInterfaceProps) {
       window.removeEventListener("cardClick", handleCardClick as EventListener)
     }
   }, [])
+
+  // Text-to-speech setup
+  useEffect(() => {
+    if ("speechSynthesis" in window) {
+      speechSynthesisRef.current = window.speechSynthesis
+    } else {
+      toast({
+        title: "Speech Synthesis Not Supported",
+        description: "Your browser does not support text-to-speech. Please use a different browser.",
+        variant: "destructive",
+      })
+    }
+  }, [toast])
+
+  const speak = useCallback(
+    (text: string) => {
+      if (!speechSynthesisRef.current) return
+
+      // Stop any ongoing speech
+      speechSynthesisRef.current.cancel()
+
+      utteranceRef.current = new SpeechSynthesisUtterance(text)
+      utteranceRef.current.rate = 0.9 // Adjust speech rate
+      utteranceRef.current.pitch = 1 // Adjust speech pitch
+      utteranceRef.current.volume = 1 // Adjust speech volume
+
+      utteranceRef.current.onstart = () => {
+        setIsSpeaking(true)
+      }
+      utteranceRef.current.onend = () => {
+        setIsSpeaking(false)
+        utteranceRef.current = null
+      }
+      utteranceRef.current.onerror = (event) => {
+        console.error("SpeechSynthesisUtterance Error:", event)
+        setIsSpeaking(false)
+        utteranceRef.current = null
+      }
+
+      speechSynthesisRef.current.speak(utteranceRef.current)
+    },
+    [setIsSpeaking, speechSynthesisRef, utteranceRef],
+  )
+
+  const stopSpeaking = () => {
+    if (speechSynthesisRef.current && utteranceRef.current) {
+      speechSynthesisRef.current.cancel()
+      setIsSpeaking(false)
+      utteranceRef.current = null
+    }
+  }
 
   // Determine which card type to show based on the query
   const getCardTypeFromQuery = (query: string): CardType | null => {
@@ -614,6 +808,113 @@ export function ChatInterface({ portfolioData }: ChatInterfaceProps) {
     )
   }
 
+  // Function to render cards (used by both CardCarousel and ChatExperienceSection)
+  const renderCards = (message: Message, index: number, onFirstCardClick: () => void, hidePagination: boolean) => {
+    const cardsToShow = message.cardType ? portfolioData[message.cardType] : []
+
+    if (!cardsToShow || cardsToShow.length === 0) {
+      return null
+    }
+
+    return (
+      <div ref={message.id === messages[messages.length - 1]?.id ? activeCardRef : null}>
+        {message.cardType === "experience" ? (
+          <ChatExperienceSection
+            experiences={cardsToShow}
+            onCardClick={handleCardClick}
+            hidePagination={hidePagination}
+          />
+        ) : (
+          <CardCarousel cards={cardsToShow} onCardClick={handleCardClick} hidePagination={false} />
+        )}
+      </div>
+    )
+  }
+
+  if (chatMode === "selecting") {
+    return (
+      <div className="absolute inset-0 flex items-center justify-center bg-background px-6">
+        <div className="flex flex-col items-center w-full max-w-[320px]">
+          {/* Avatar */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            className="mb-8"
+          >
+            <Avatar className="w-20 h-20 ring-2 ring-border/50">
+              <AvatarFallback />
+            </Avatar>
+          </motion.div>
+
+          {/* Greeting */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.15 }}
+            className="text-center mb-10"
+          >
+            <h1 className="text-2xl font-semibold text-foreground mb-2">Hi, I'm Jay</h1>
+            <p className="text-muted-foreground text-sm max-w-[280px]">
+              Welcome to my interactive portfolio. How would you like to explore?
+            </p>
+          </motion.div>
+
+          {/* Options - Clean list style */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="w-full space-y-3"
+          >
+            <button
+              onClick={() => handleModeSelect("explore")}
+              className="group w-full flex items-center justify-between px-5 py-4 rounded-2xl border border-border/60 bg-card/50 hover:bg-card hover:border-primary/30 transition-all duration-200"
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                  <Sparkles className="w-5 h-5 text-primary" />
+                </div>
+                <div className="text-left">
+                  <span className="block text-sm font-medium text-foreground">Ask Anything</span>
+                  <span className="block text-xs text-muted-foreground">Explore freely on your own</span>
+                </div>
+              </div>
+              <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
+            </button>
+
+            {/* Option 2: Jay's Journey */}
+            <button
+              onClick={() => handleModeSelect("journey")}
+              className="group w-full flex items-center justify-between px-5 py-4 rounded-2xl border border-border/60 bg-card/50 hover:bg-card hover:border-emerald-500/30 transition-all duration-200"
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center">
+                  <Map className="w-5 h-5 text-emerald-500" />
+                </div>
+                <div className="text-left">
+                  <span className="block text-sm font-medium text-foreground">Jay's Journey</span>
+                  <span className="block text-xs text-muted-foreground">Guided tour</span>
+                </div>
+              </div>
+              <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-emerald-500 group-hover:translate-x-0.5 transition-all" />
+            </button>
+          </motion.div>
+
+          {/* Subtle hint */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+            className="mt-8 text-xs text-muted-foreground/60"
+          >
+            Pick one to get started
+          </motion.p>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div
       className="flex flex-col w-full max-w-4xl md:max-w-5xl lg:max-w-6xl mx-auto h-[calc(100vh-40px)] mb-0 relative"
@@ -724,17 +1025,41 @@ export function ChatInterface({ portfolioData }: ChatInterfaceProps) {
                             </p>
                           )}
 
-                          {/* Quick suggestion pills - only show for regular bot messages (not follow-ups) */}
-                          {message.sender === "bot" && !isTyping && !message.isFollowUp && (
+                          {/* Journey progress indicator now inline with Continue button, separate from carousel pagination */}
+                          {chatMode === "journey" && message.cardType && !isJourneyComplete && (
+                            <div className="flex items-center justify-between mt-3 gap-3">
+                              <div className="flex items-center gap-1.5">
+                                {journeySteps.map((step, index) => (
+                                  <div
+                                    key={step.topic}
+                                    className={cn(
+                                      "w-1.5 h-1.5 rounded-full transition-all duration-300",
+                                      index <= journeyStep ? "bg-[#10b981]" : "bg-muted-foreground/30",
+                                    )}
+                                  />
+                                ))}
+                                <span className="text-xs text-muted-foreground ml-1">
+                                  {journeyStep + 1}/{journeySteps.length}
+                                </span>
+                              </div>
+                              <Button
+                                onClick={continueJourney}
+                                className="rounded-full bg-[#10b981] hover:bg-[#059669] text-white text-sm px-4"
+                              >
+                                {journeyStep < journeySteps.length - 1 ? "Continue Journey" : "Finish Journey"}
+                              </Button>
+                            </div>
+                          )}
+
+                          {/* Quick suggestion pills - only show for regular bot messages (not follow-ups) and in explore mode */}
+                          {chatMode === "explore" && message.sender === "bot" && !isTyping && !message.isFollowUp && (
                             <div className="flex flex-wrap gap-2 mt-2">
                               {message.cardType === "experience" && (
                                 <>
                                   <Button
                                     variant="outline"
                                     size="sm"
-                                    onClick={() =>
-                                      handleSuggestionClick("What skills did you use at Noise Digital?", "skills")
-                                    }
+                                    onClick={() => handleSuggestionClick("Skills at Noise Digital?", "skills")}
                                     className="rounded-full text-xs bg-white/80 dark:bg-black/20 hover:bg-white dark:hover:bg-black/40 border-muted"
                                   >
                                     Skills at Noise Digital?
@@ -742,7 +1067,7 @@ export function ChatInterface({ portfolioData }: ChatInterfaceProps) {
                                   <Button
                                     variant="outline"
                                     size="sm"
-                                    onClick={() => handleSuggestionClick("Tell me about your projects", "projects")}
+                                    onClick={() => handleSuggestionClick("Show me your projects", "projects")}
                                     className="rounded-full text-xs bg-white/80 dark:bg-black/20 hover:bg-white dark:hover:bg-black/40 border-muted"
                                   >
                                     See projects
@@ -799,20 +1124,20 @@ export function ChatInterface({ portfolioData }: ChatInterfaceProps) {
                                   <Button
                                     variant="outline"
                                     size="sm"
-                                    onClick={() => handleSuggestionClick("Tell me about your education", "education")}
+                                    onClick={() =>
+                                      handleSuggestionClick("How do these certifications help your work?", "experience")
+                                    }
                                     className="rounded-full text-xs bg-white/80 dark:bg-black/20 hover:bg-white dark:hover:bg-black/40 border-muted"
                                   >
-                                    Education background
+                                    How do these help?
                                   </Button>
                                   <Button
                                     variant="outline"
                                     size="sm"
-                                    onClick={() =>
-                                      handleSuggestionClick("How do you apply these certifications?", "experience")
-                                    }
+                                    onClick={() => handleSuggestionClick("Tell me about your education", "education")}
                                     className="rounded-full text-xs bg-white/80 dark:bg-black/20 hover:bg-white dark:hover:bg-black/40 border-muted"
                                   >
-                                    How do you apply these?
+                                    Education background
                                   </Button>
                                 </>
                               )}
@@ -827,15 +1152,17 @@ export function ChatInterface({ portfolioData }: ChatInterfaceProps) {
                                     }
                                     className="rounded-full text-xs bg-white/80 dark:bg-black/20 hover:bg-white dark:hover:bg-black/40 border-muted"
                                   >
-                                    Certifications
+                                    Certifications?
                                   </Button>
                                   <Button
                                     variant="outline"
                                     size="sm"
-                                    onClick={() => handleSuggestionClick("Tell me about your skills", "skills")}
+                                    onClick={() =>
+                                      handleSuggestionClick("Tell me about your work experience", "experience")
+                                    }
                                     className="rounded-full text-xs bg-white/80 dark:bg-black/20 hover:bg-white dark:hover:bg-black/40 border-muted"
                                   >
-                                    Skills gained
+                                    Work experience
                                   </Button>
                                 </>
                               )}
@@ -845,20 +1172,18 @@ export function ChatInterface({ portfolioData }: ChatInterfaceProps) {
                                   <Button
                                     variant="outline"
                                     size="sm"
-                                    onClick={() => handleSuggestionClick("Tell me about your experience", "experience")}
+                                    onClick={() => handleSuggestionClick("What are your skills?", "skills")}
                                     className="rounded-full text-xs bg-white/80 dark:bg-black/20 hover:bg-white dark:hover:bg-black/40 border-muted"
                                   >
-                                    Professional experience
+                                    Your skills?
                                   </Button>
                                   <Button
                                     variant="outline"
                                     size="sm"
-                                    onClick={() =>
-                                      handleSuggestionClick("What skills did you gain from volunteering?", "skills")
-                                    }
+                                    onClick={() => handleSuggestionClick("Show me your projects", "projects")}
                                     className="rounded-full text-xs bg-white/80 dark:bg-black/20 hover:bg-white dark:hover:bg-black/40 border-muted"
                                   >
-                                    Skills gained
+                                    See projects
                                   </Button>
                                 </>
                               )}
@@ -871,101 +1196,37 @@ export function ChatInterface({ portfolioData }: ChatInterfaceProps) {
                       </motion.div>
                     </div>
 
-                    {message.cardType === "experience" && portfolioData[message.cardType] && (
-                      <motion.div
-                        ref={index === messages.length - 1 ? activeCardRef : undefined}
-                        className="pl-2 pr-2 mt-2 pb-4"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{
-                          duration: 0.5,
-                          ease: "easeOut",
-                          delay: 0.3,
-                        }}
-                      >
-                        <ChatExperienceSection experiences={portfolioData[message.cardType]} />
-                      </motion.div>
-                    )}
-
-                    {message.cardType &&
-                      message.cardType !== "experience" &&
-                      message.cardType !== "custom" &&
-                      portfolioData[message.cardType] && (
-                        <motion.div
-                          ref={index === messages.length - 1 ? activeCardRef : undefined}
-                          className="pl-2 pr-2 mt-2 pb-4"
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{
-                            duration: 0.5,
-                            ease: "easeOut",
-                            delay: 0.3,
-                          }}
-                        >
-                          <CardCarousel cards={portfolioData[message.cardType]} onCardClick={handleCardClick} />
-                        </motion.div>
-                      )}
-
-                    {message.cardType === "custom" && (
-                      <motion.div
-                        ref={index === messages.length - 1 ? activeCardRef : undefined}
-                        className="pl-2 pr-2 mt-2 pb-4"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{
-                          duration: 0.5,
-                          ease: "easeOut",
-                          delay: 0.3,
-                        }}
-                      >
-                        <CardCarousel
-                          cards={[
-                            {
-                              id: `custom-${message.id}`,
-                              type: "custom" as CardType,
-                              title: "About Me",
-                              subtitle: "Jay Li",
-                              description: message.content,
-                              tags: ["Profile", "Background", "Summary"],
-                            },
-                          ]}
-                          onCardClick={handleCardClick}
-                        />
-                      </motion.div>
+                    {/* Card carousel for this message */}
+                    {renderCards(
+                      message,
+                      index,
+                      () => {
+                        const firstCard = message.cards?.[0] || message.compactCards?.[0]
+                        if (firstCard) {
+                          setSelectedCard(firstCard)
+                        }
+                      },
+                      false, // Always show pagination so users know there are more cards
                     )}
                   </motion.div>
                 ))}
               </AnimatePresence>
 
               {/* Typing indicator */}
-              <AnimatePresence>
-                {isTyping && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    transition={{ duration: 0.3 }}
-                    className="flex justify-start items-center mb-1"
-                  >
-                    <motion.div
-                      className="w-12 h-12 sm:w-14 sm:h-14 mr-4 rounded-full overflow-hidden flex items-center justify-center bg-transparent"
-                      animate={{
-                        scale: [1, 1.1, 1],
-                      }}
-                      transition={{
-                        duration: 1.5,
-                        repeat: Number.POSITIVE_INFINITY,
-                        ease: "easeInOut",
-                      }}
-                    >
-                      <AvatarFallback />
-                    </motion.div>
-                    <div className="bg-[#f0f2f5] dark:bg-[#2a2a2a] rounded-3xl rounded-bl-lg p-4 flex items-center justify-center">
-                      <TypingIndicator />
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              {isTyping && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex justify-start mb-2"
+                >
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 mr-4 rounded-full overflow-hidden flex items-center justify-center bg-transparent">
+                    <AvatarFallback />
+                  </div>
+                  <div className="bg-[#f0f2f5] dark:bg-[#2a2a2a] p-4 rounded-3xl rounded-bl-lg">
+                    <TypingIndicator />
+                  </div>
+                </motion.div>
+              )}
 
               <div ref={messagesEndRef} />
             </div>
@@ -974,61 +1235,53 @@ export function ChatInterface({ portfolioData }: ChatInterfaceProps) {
           {/* Fixed input area at the bottom */}
           <div
             ref={inputAreaRef}
-            className="fixed bottom-0 left-0 right-0 z-30 bg-background/80 backdrop-blur-md border-t border-border/10 shadow-lg"
-            style={{
-              paddingBottom: "env(safe-area-inset-bottom, 0.5rem)",
-              paddingLeft: "env(safe-area-inset-left, 0.75rem)",
-              paddingRight: "env(safe-area-inset-right, 0.75rem)",
-              maxWidth: "inherit",
-              width: "100%",
-              margin: "0 auto",
-            }}
+            className="absolute bottom-0 left-0 right-0 z-30 bg-gradient-to-t from-background via-background to-transparent pt-4"
           >
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="w-full max-w-4xl md:max-w-5xl lg:max-w-6xl mx-auto"
-            >
-              <ChatSuggestions
-                onSuggestionClick={(suggestion, topic) => handleSuggestionClick(suggestion, topic)}
-                exploredTopics={exploredTopics}
-                onReturnToTopic={handleReturnToConversation}
-              />
-            </motion.div>
+            {/* Suggestions - only show in explore mode */}
+            {chatMode === "explore" && (
+              <div className="px-4 mb-3">
+                <ChatSuggestions
+                  onSuggestionClick={handleSuggestionClick}
+                  exploredTopics={exploredTopics}
+                  onReturnToTopic={handleReturnToConversation}
+                />
+              </div>
+            )}
 
-            <div className="p-3 pb-2 w-full max-w-4xl md:max-w-5xl lg:max-w-6xl mx-auto">
-              <div className="flex gap-2 sm:gap-3 items-center">
+            <div className="px-4 pb-4">
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault()
+                  handleSendMessage()
+                }}
+                className="flex items-center gap-2"
+              >
                 <Input
-                  placeholder="Ask about me..."
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      handleSendMessage()
-                    }
-                  }}
-                  className="flex-1 text-sm h-9 sm:h-10"
-                  aria-label="Chat input"
-                  autoFocus={false}
+                  placeholder={
+                    chatMode === "journey" && !isJourneyComplete ? "Ask a follow-up question..." : "Ask me anything..."
+                  }
+                  className="flex-1 rounded-full bg-[#f0f2f5] dark:bg-[#2a2a2a] border-0 px-4 py-6 text-base"
                 />
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} transition={{ duration: 0.15 }}>
-                  <Button
-                    onClick={handleSendMessage}
-                    size="icon"
-                    className="h-9 w-9 sm:h-10 sm:w-10 flex-shrink-0"
-                    aria-label="Send message"
-                  >
-                    <Send className="h-4 w-4" />
-                  </Button>
-                </motion.div>
-              </div>
+                <Button
+                  type="submit"
+                  size="icon"
+                  className="rounded-full bg-[#0066ff] hover:bg-[#0052cc] w-12 h-12 shrink-0"
+                  disabled={!input.trim()}
+                >
+                  <Send className="w-5 h-5" />
+                </Button>
+              </form>
             </div>
           </div>
         </div>
       </div>
 
-      <CardExpanded card={selectedCard} onClose={() => setSelectedCard(null)} />
+      {/* Card expanded modal */}
+      <AnimatePresence>
+        {selectedCard && <CardExpanded card={selectedCard} onClose={() => setSelectedCard(null)} />}
+      </AnimatePresence>
     </div>
   )
 }
