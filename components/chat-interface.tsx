@@ -19,6 +19,8 @@ import type { PortfolioData, CardType, CardData } from "@/data/portfolio-data"
 import { useMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 import { customResponses } from "@/data/custom-responses"
+import { ChatProjectSection } from "./project/chat-project-section"
+import { projectsForCarousel } from "@/data/portfolio-data"
 
 // Removed redundant 'interface Message' definition here as it's likely shadowed by the import from 'ai'
 // If the imported 'Message' from 'ai' is insufficient, a different name should be used, e.g., 'ChatMessage'
@@ -809,6 +811,14 @@ export function ChatInterface({ portfolioData }: ChatInterfaceProps) {
       return null
     }
 
+    if (message.cardType === "projects") {
+      return (
+        <div ref={message.id === messages[messages.length - 1]?.id ? activeCardRef : null}>
+          <ChatProjectSection projects={projectsForCarousel} />
+        </div>
+      )
+    }
+
     return (
       <div ref={message.id === messages[messages.length - 1]?.id ? activeCardRef : null}>
         {message.cardType === "experience" ? (
@@ -986,7 +996,7 @@ export function ChatInterface({ portfolioData }: ChatInterfaceProps) {
                       >
                         <div className="flex flex-col gap-2">
                           {message.isAiResponse ? (
-                            <p className="text-sm sm:text-base whitespace-pre-line leading-relaxed m-0 p-0">
+                            <p className="text-sm sm:text-base leading-relaxed m-0 p-0">
                               <StreamingText text={message.content} />
                             </p>
                           ) : message.isFollowUp ? (

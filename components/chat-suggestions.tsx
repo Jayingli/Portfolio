@@ -1,5 +1,7 @@
 "use client"
 
+import type React from "react"
+
 import { useRef, useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -48,6 +50,10 @@ export function ChatSuggestions({
   const [animationDuration, setAnimationDuration] = useState(30)
   const [isPaused, setIsPaused] = useState(false)
 
+  const isDragging = useRef(false)
+  const startX = useRef(0)
+  const scrollLeft = useRef(0)
+
   // Measure content and set up animation
   useEffect(() => {
     if (!containerRef.current || !contentRef.current) return
@@ -74,38 +80,65 @@ export function ChatSuggestions({
     }
   }, [])
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    isDragging.current = true
+    startX.current = e.touches[0].pageX
+    scrollLeft.current = containerRef.current?.scrollLeft || 0
+    setIsPaused(true)
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging.current || !containerRef.current) return
+    const x = e.touches[0].pageX
+    const walk = (startX.current - x) * 1.5
+    containerRef.current.scrollLeft = scrollLeft.current + walk
+  }
+
+  const handleTouchEnd = () => {
+    isDragging.current = false
+    setIsPaused(false)
+  }
+
   return (
     <div className="relative py-1">
       {/* Fade-out gradients - REDUCED WIDTH */}
-      <div className="absolute left-0 top-0 bottom-0 w-4 bg-gradient-to-r from-background to-transparent z-10"></div>
-      <div className="absolute right-0 top-0 bottom-0 w-4 bg-gradient-to-l from-background to-transparent z-10"></div>
+      <div className="absolute left-0 top-0 bottom-0 w-4 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none"></div>
+      <div className="absolute right-0 top-0 bottom-0 w-4 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none"></div>
 
-      {/* Marquee container */}
       <div
         ref={containerRef}
         className={cn(
-          "py-1 px-2 overflow-hidden relative",
-          "whitespace-nowrap mask-fade-sides-narrow", // Updated class name
+          "py-1 px-2 overflow-x-auto overflow-y-hidden relative scrollbar-hide",
+          "whitespace-nowrap",
           "w-full max-w-full",
+          "touch-pan-x", // Enable horizontal touch panning
           className,
         )}
+        style={{
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+          WebkitOverflowScrolling: "touch", // Smooth scrolling on iOS
+        }}
         aria-label="Suggested questions and navigation"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
       >
         {/* Marquee content */}
         <motion.div
           ref={contentRef}
           className={cn(
-            "inline-flex items-center gap-3", // Increased gap from 1 to 3
-            shouldAnimate && "animate-marquee",
+            "inline-flex items-center gap-3",
+            shouldAnimate && !isDragging.current && "animate-marquee",
             isPaused && "animate-pause",
           )}
           style={
-            shouldAnimate
+            shouldAnimate && !isDragging.current
               ? {
                   animationDuration: `${animationDuration}s`,
-                  paddingRight: "2rem", // Add spacing between the end and beginning for seamless loop
+                  paddingRight: "2rem",
                 }
               : undefined
           }
@@ -137,7 +170,7 @@ export function ChatSuggestions({
                       className={cn(
                         "whitespace-nowrap bg-white dark:bg-[#121212] hover:bg-muted rounded-full",
                         "flex items-center gap-1 border dark:border-white/10",
-                        "suggestion-button", // Add custom class for hover effects
+                        "suggestion-button",
                         isExplored && isMobile ? "h-7 w-7" : isMobile ? "text-xs h-7 px-2 py-1" : "text-sm px-4",
                       )}
                       onClick={() =>
@@ -180,7 +213,7 @@ export function ChatSuggestions({
               )
             })}
 
-            {/* Duplicate content for seamless looping */}
+            {/* Duplicate content for seamless looping - only when animating */}
             {shouldAnimate &&
               suggestionTopics.map((suggestion, index) => {
                 const isExplored = exploredTopics.has(suggestion.topic)
@@ -205,7 +238,7 @@ export function ChatSuggestions({
                         className={cn(
                           "whitespace-nowrap bg-white dark:bg-[#121212] hover:bg-muted rounded-full",
                           "flex items-center gap-1 border dark:border-white/10",
-                          "suggestion-button", // Add custom class for hover effects
+                          "suggestion-button",
                           isExplored && isMobile ? "h-7 w-7" : isMobile ? "text-xs h-7 px-2 py-1" : "text-sm px-4",
                         )}
                         onClick={() =>

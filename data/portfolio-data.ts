@@ -22,6 +22,14 @@ export interface PortfolioData {
   volunteering: CardData[]
 }
 
+export interface Project {
+  name: string
+  description: string
+  tags: string[]
+  image: string
+  url: string
+}
+
 export const portfolioData: PortfolioData = {
   experience: [
     {
@@ -302,6 +310,7 @@ export const portfolioData: PortfolioData = {
         "Medical Aesthetics",
       ],
       link: "https://www.elixir1.ca/",
+      image: "/images/elixir1-screenshot.png",
     },
     {
       id: "proj-browfix",
@@ -316,6 +325,7 @@ export const portfolioData: PortfolioData = {
         "Built professional gallery showcasing before/after results with optimized mobile loading and local SEO.",
       tags: ["Web Design", "Brand Strategy", "Booking System", "Responsive Design", "Beauty Services", "UX/UI", "SEO"],
       link: "https://browfix.ca/",
+      image: "/images/browfix-screenshot.png",
     },
     {
       id: "proj-macafe",
@@ -328,16 +338,9 @@ export const portfolioData: PortfolioData = {
         "Defined a warm, artisanal brand identity with sophisticated gold accents and compelling storytelling.\n\n" +
         "Integrated online ordering system with Uber Eats connectivity for seamless delivery.\n\n" +
         "Created gallery showcase highlighting coffee craftsmanship with mobile-optimized design for on-the-go ordering.",
-      tags: [
-        "Web Design",
-        "Brand Strategy",
-        "E-commerce",
-        "Uber Eats Integration",
-        "Responsive Design",
-        "Food & Beverage",
-        "UX/UI",
-      ],
+      tags: ["Web Design", "Brand Strategy", "Next.js", "E-commerce", "Responsive Design", "UX/UI", "Food & Beverage"],
       link: "https://macafeto.ca/",
+      image: "/images/macafe-screenshot.png",
     },
     {
       id: "proj-drcat",
@@ -352,6 +355,7 @@ export const portfolioData: PortfolioData = {
         "Created detailed service descriptions with pricing, benefits, and optional enhancements for personalized care.",
       tags: ["Web Design", "Booking System", "Wellness Services", "Responsive Design", "UX/UI", "Healthcare", "SEO"],
       link: "https://www.drcatwellness.com/",
+      image: "/images/drcat-screenshot.png",
     },
     {
       id: "proj-tarot",
@@ -649,3 +653,38 @@ export const portfolioData: PortfolioData = {
     },
   ],
 }
+
+export const projectsForCarousel: Project[] = [
+  {
+    name: "Elixir1 Skincare Clinic",
+    description:
+      "Full-service brand identity and website for a premium medical aesthetics clinic. Features gold accent palette, luxury design system, VISIA skin analysis integration, and booking system.",
+    tags: ["Brand Strategy", "Web Design", "Booking System"],
+    image: "/images/elixir1-screenshot.png",
+    url: "https://www.elixir1.ca/",
+  },
+  {
+    name: "BrowFix",
+    description:
+      "Modern beauty studio website with soft pink branding. Includes service booking integration, before/after gallery, and mobile-optimized design for premium brow and lash services.",
+    tags: ["Web Design", "Booking Integration", "Brand Identity"],
+    image: "/images/browfix-screenshot.png",
+    url: "https://browfix.ca/",
+  },
+  {
+    name: "M&A CAFE",
+    description:
+      "Artisanal coffee shop website with warm brand identity and sophisticated gold accents. Features online menu, Uber Eats integration, and compelling coffee culture storytelling.",
+    tags: ["Web Design", "E-commerce", "Brand Identity"],
+    image: "/images/macafe-screenshot.png",
+    url: "https://macafeto.ca/",
+  },
+  {
+    name: "Dr. Cat Wellness",
+    description:
+      "Calming, professional wellness clinic website with Acuity Scheduling integration. Features therapist bio, service descriptions, accessibility compliance, and mobile-first design.",
+    tags: ["Web Design", "Booking System", "Brand Strategy"],
+    image: "/images/drcat-screenshot.png",
+    url: "https://www.drcatwellness.com/",
+  },
+]
