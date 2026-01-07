@@ -147,145 +147,125 @@ export const portfolioData: PortfolioData = {
     {
       id: "skill1",
       type: "skills",
-      title: "Project Delivery & Governance",
+      title: "Engineering Operations & Delivery",
       subtitle: "Expert",
       description:
         "🧩 Core Skills\n" +
-        "Project plans, timelines, RAID logs, scope & change control, dependency & risk management, dashboards, status reporting, resource coordination\n\n" +
+        "Sprint cadence, planning cycles, release coordination, dependency tracking, work-back plans, KPI/velocity dashboards, QA allocation\n\n" +
         "🔧 Applications\n" +
-        "• End-to-end project lifecycle management\n" +
-        "• Risk identification and mitigation planning\n" +
-        "• Stakeholder alignment and communication\n" +
-        "• Cross-functional team coordination\n" +
-        "• Budget tracking and invoicing\n\n" +
+        "• End-to-end engineering project lifecycle management\n" +
+        "• Velocity tracking and sprint metrics\n" +
+        "• Cross-team dependency coordination\n" +
+        "• Release planning and deployment workflows\n\n" +
         "🎯 Focus Areas\n" +
-        "• Large-scale digital and SaaS initiatives\n" +
-        "• Enterprise and financial clients\n" +
-        "• Data-driven project delivery",
+        "• Large-scale SaaS and web infrastructure delivery\n" +
+        "• Engineering team operations and optimization\n" +
+        "• Technical project delivery at scale",
       tags: [
-        "Project Plans",
-        "RAID Logs",
-        "Risk Management",
-        "Change Control",
-        "Dashboards",
-        "Status Reporting",
-        "Resource Coordination",
+        "Sprint Cadence",
+        "Release Coordination",
+        "Dependency Tracking",
+        "KPI Dashboards",
+        "Velocity",
+        "QA Allocation",
+        "Work-back Plans",
       ],
     },
     {
       id: "skill2",
       type: "skills",
-      title: "Agile & Hybrid Delivery",
+      title: "Process & Governance",
       subtitle: "Expert",
       description:
         "🧩 Core Skills\n" +
-        "Scrum, Kanban, sprint planning, stand-ups, retros, backlog refinement, story writing\n\n" +
+        "Roadmapping, estimation standards, Jira/Confluence best practices, work intake, status reporting, risk escalation\n\n" +
         "🔧 Tools\n" +
-        "• Jira, Confluence, Azure DevOps\n" +
-        "• Asana, Monday.com, Trello\n\n" +
+        "• Jira, Confluence (admin & customization)\n" +
+        "• Process documentation and templates\n" +
+        "• RAID logs and risk management\n\n" +
         "🎯 Focus Areas\n" +
-        "• Hybrid Agile delivery for enterprise clients\n" +
-        "• Scrum Master facilitation\n" +
-        "• Program coordination across global teams",
+        "• PMO framework setup and optimization\n" +
+        "• Governance standards for enterprise clients\n" +
+        "• Work intake and prioritization processes",
       tags: [
-        "Scrum",
-        "Kanban",
-        "Sprint Planning",
-        "Backlog Refinement",
-        "Jira",
+        "Roadmapping",
+        "Estimation",
+        "Jira Best Practices",
         "Confluence",
-        "Azure DevOps",
-        "Asana",
-        "Monday.com",
+        "Work Intake",
+        "Status Reporting",
+        "Risk Escalation",
       ],
     },
     {
       id: "skill3",
       type: "skills",
-      title: "Finance & Data Exposure",
-      subtitle: "Advanced",
+      title: "Agile & Hybrid Delivery",
+      subtitle: "Expert",
       description:
         "🧩 Core Skills\n" +
-        "Data flow mapping, reporting pipelines, treasury & accounting workflows, consent & privacy requirements\n\n" +
-        "🔧 Tools\n" +
-        "• GA4, Power BI, Looker Studio\n" +
-        "• BigQuery, Data Governance\n\n" +
+        "Scrum, Kanban, backlog refinement, sprint planning, retros, stand-ups, hybrid workflows\n\n" +
+        "🔧 Methodologies\n" +
+        "• Scrum framework and ceremonies\n" +
+        "• Kanban flow management\n" +
+        "• Hybrid Agile for enterprise settings\n\n" +
         "🎯 Focus Areas\n" +
-        "• Treasury and reporting initiatives\n" +
-        "• GDPR/CCPA compliance\n" +
-        "• Data-driven decision making",
-      tags: [
-        "Data Flow Mapping",
-        "Reporting Pipelines",
-        "Treasury",
-        "GA4",
-        "Power BI",
-        "Looker Studio",
-        "GDPR",
-        "CCPA",
-      ],
+        "• Scrum Master facilitation\n" +
+        "• Agile transformation and coaching\n" +
+        "• Cross-functional Agile team leadership",
+      tags: ["Scrum", "Kanban", "Backlog Refinement", "Sprint Planning", "Retros", "Stand-ups", "Hybrid Workflows"],
     },
     {
       id: "skill4",
+      type: "skills",
+      title: "Metrics & Tools",
+      subtitle: "Advanced",
+      description:
+        "🧩 Core Skills\n" +
+        "Dashboards for velocity, SLAs, incident response; data pipelines, analytics integration\n\n" +
+        "🔧 Tools\n" +
+        "• Jira, Confluence, Azure DevOps\n" +
+        "• Asana, Monday.com\n" +
+        "• GA4, Power BI, Looker Studio\n\n" +
+        "🎯 Focus Areas\n" +
+        "• Custom dashboard creation for stakeholders\n" +
+        "• SLA tracking and incident response reporting\n" +
+        "• Data-driven project insights and optimization",
+      tags: ["Dashboards", "Velocity Tracking", "SLAs", "Jira", "Azure DevOps", "GA4", "Power BI", "Looker Studio"],
+    },
+    {
+      id: "skill5",
       type: "skills",
       title: "Collaboration & Productivity",
       subtitle: "Expert",
       description:
         "🧩 Core Skills\n" +
-        "Cross-functional team leadership, stakeholder communication, documentation, knowledge sharing\n\n" +
+        "Cross-functional facilitation across engineering, product, QA, business ops\n\n" +
         "🔧 Tools\n" +
         "• Microsoft 365, Google Workspace\n" +
-        "• Smartsheet, Notion, Slack, Zoom\n" +
-        "• Miro, Lucid\n\n" +
+        "• Smartsheet, Slack, Zoom, Miro\n\n" +
         "🎯 Focus Areas\n" +
         "• Remote and distributed team coordination\n" +
-        "• Clear communication across all levels\n" +
-        "• Fostering collaboration between engineering, product, and business teams",
-      tags: ["Microsoft 365", "Google Workspace", "Smartsheet", "Notion", "Slack", "Miro", "Lucid", "Team Leadership"],
-    },
-    {
-      id: "skill5",
-      type: "skills",
-      title: "Data & Tagging",
-      subtitle: "Advanced",
-      description:
-        "🧩 Core Skills\n" +
-        "Supporting reporting needs through tagging infrastructure and analytics implementation\n\n" +
-        "🔧 Tools\n" +
-        "• Google Tag Manager, Meta Pixel, Floodlight\n" +
-        "• Consent Mode, CAPI, Segment\n" +
-        "• Google Ads, Meta Ads, LinkedIn Ads, TikTok Ads\n\n" +
-        "🎯 Focus Areas\n" +
-        "• GTM migrations and framework builds\n" +
-        "• Consent management deployments\n" +
-        "• Analytics platform rollouts",
-      tags: [
-        "Google Tag Manager",
-        "Meta Pixel",
-        "Floodlight",
-        "Consent Mode",
-        "CAPI",
-        "Segment",
-        "Google Ads",
-        "Meta Ads",
-      ],
+        "• Stakeholder communication at all levels\n" +
+        "• Building alignment between engineering, product, and business",
+      tags: ["Microsoft 365", "Google Workspace", "Smartsheet", "Slack", "Zoom", "Miro", "Cross-functional Teams"],
     },
     {
       id: "skill6",
       type: "skills",
-      title: "Testing & QA Tools",
-      subtitle: "Intermediate",
+      title: "Testing & QA Support",
+      subtitle: "Advanced",
       description:
         "🧩 Core Skills\n" +
-        "QA coordination, test plan development, debugging, performance monitoring\n\n" +
+        "QA capacity planning, defect triage, performance monitoring, debugging support\n\n" +
         "🔧 Tools\n" +
-        "• ObservePoint, Lighthouse, Chrome DevTools\n" +
-        "• Hotjar, GA Debugger\n\n" +
+        "• Lighthouse, Hotjar, ObservePoint\n" +
+        "• Chrome DevTools, GA Debugger\n\n" +
         "🎯 Focus Areas\n" +
-        "• QA plans and change-readiness documentation\n" +
-        "• Defect triage and testing coordination\n" +
-        "• Performance optimization",
-      tags: ["ObservePoint", "Lighthouse", "Chrome DevTools", "Hotjar", "GA Debugger", "QA", "Testing"],
+        "• QA coordination and test planning\n" +
+        "• Defect triage and prioritization\n" +
+        "• Performance optimization support",
+      tags: ["QA Planning", "Defect Triage", "Lighthouse", "Hotjar", "ObservePoint", "Testing Coordination"],
     },
   ],
   projects: [
@@ -476,22 +456,6 @@ export const portfolioData: PortfolioData = {
       tags: ["Agile", "PMI", "Scrum", "Kanban", "Lean", "Project Management"],
     },
     {
-      id: "cert0",
-      type: "certifications",
-      title: "Product Manager Certification (PMC™)",
-      subtitle: "BrainStation",
-      dates: "2024",
-      description:
-        "Completed an 8-week, part-time product management certification program.\n\n" +
-        "Built product strategies using Agile, Scrum, Lean, and Jobs-To-Be-Done frameworks.\n\n" +
-        "Developed product roadmaps, wireframes, and go-to-market strategies.\n\n" +
-        "Conducted user research, created personas, PRDs, MVPs, and product analytics reports.\n\n" +
-        "Collaborated on product launch planning, stakeholder communication, and risk mitigation.\n\n" +
-        "Gained hands-on experience with Figma, Jira, Google Forms, SurveyMonkey, ChatGPT, and industry best practices.",
-      tags: ["Product Management", "Agile", "Scrum", "Lean", "JTBD", "Roadmapping", "User Research", "Wireframing"],
-      imageUrl: "/images/brainstation-pmc-logo.svg",
-    },
-    {
       id: "cert1",
       type: "certifications",
       title: "Certified Scrum Master (CSM)",
@@ -527,7 +491,7 @@ export const portfolioData: PortfolioData = {
     {
       id: "cert4",
       type: "certifications",
-      title: "Atlassian Agile Project Management",
+      title: "Atlassian Agile Project Management Certification",
       subtitle: "Atlassian",
       dates: "2023",
       description:

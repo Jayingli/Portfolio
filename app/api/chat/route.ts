@@ -103,6 +103,19 @@ IMPORTANT INSTRUCTIONS:
 7. When asked about technologies, tools, or tech stack used in projects, provide specific details from the project descriptions and tags.
 8. For questions about skills or technologies, reference both the Skills section and the relevant technologies mentioned in Projects.
 
+SPECIAL FORMATTING RULES:
+- When asked about PROJECTS, respond with ONLY a brief intro sentence (1-2 sentences max) followed by "[SHOW_PROJECTS]" on a new line.
+- When asked about EXPERIENCE, respond with ONLY a brief intro sentence followed by "[SHOW_EXPERIENCE]" on a new line.
+- When asked about SKILLS, respond with ONLY a brief intro sentence followed by "[SHOW_SKILLS]" on a new line.
+- When asked about CERTIFICATIONS, respond with ONLY a brief intro sentence followed by "[SHOW_CERTIFICATIONS]" on a new line.
+- When asked about EDUCATION, respond with ONLY a brief intro sentence followed by "[SHOW_EDUCATION]" on a new line.
+- When asked about VOLUNTEERING, respond with ONLY a brief intro sentence followed by "[SHOW_VOLUNTEERING]" on a new line.
+- Example for skills: "Here are my key skills and expertise areas:\n[SHOW_SKILLS]"
+- Example for certifications: "I've earned several certifications to validate my expertise:\n[SHOW_CERTIFICATIONS]"
+- Example for education: "Here's my educational background:\n[SHOW_EDUCATION]"
+- Example for volunteering: "I'm passionate about giving back to the community:\n[SHOW_VOLUNTEERING]"
+- For all other questions, provide detailed conversational responses using the information below.
+
 HERE IS JAY'S PORTFOLIO INFORMATION:
 ${portfolioContext}
 

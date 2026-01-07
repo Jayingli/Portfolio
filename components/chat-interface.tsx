@@ -21,6 +21,9 @@ import { cn } from "@/lib/utils"
 import { customResponses } from "@/data/custom-responses"
 import { ChatProjectSection } from "./project/chat-project-section"
 import { projectsForCarousel } from "@/data/portfolio-data"
+import { ChatSkillsSection } from "@/components/chat-skills-section"
+import { ChatCertificationsSection } from "@/components/chat-certifications-section"
+import { ChatEducationSection } from "@/components/chat-education-section"
 
 // Removed redundant 'interface Message' definition here as it's likely shadowed by the import from 'ai'
 // If the imported 'Message' from 'ai' is insufficient, a different name should be used, e.g., 'ChatMessage'
@@ -513,20 +516,65 @@ export function ChatInterface({ portfolioData }: ChatInterfaceProps) {
         setTimeout(() => {
           setIsTyping(false)
 
-          // Determine if we should show a card based on the query
-          const cardType = getCardTypeFromQuery(input)
-          if (cardType) {
-            setActiveSection(cardType)
-            setExploredTopics((prev) => new Set([...prev, cardType]))
+          const responseContent = data.message || "I received your message but couldn't generate a proper response."
+
+          const hasProjectsTag = responseContent.includes("[SHOW_PROJECTS]")
+          const hasExperienceTag = responseContent.includes("[SHOW_EXPERIENCE]")
+          const hasSkillsTag = responseContent.includes("[SHOW_SKILLS]")
+          const hasCertificationsTag = responseContent.includes("[SHOW_CERTIFICATIONS]")
+          const hasEducationTag = responseContent.includes("[SHOW_EDUCATION]")
+          const hasVolunteeringTag = responseContent.includes("[SHOW_VOLUNTEERING]")
+
+          // Clean the response by removing all tags
+          const cleanedContent = responseContent
+            .replace(
+              /\[SHOW_PROJECTS\]|\[SHOW_EXPERIENCE\]|\[SHOW_SKILLS\]|\[SHOW_CERTIFICATIONS\]|\[SHOW_EDUCATION\]|\[SHOW_VOLUNTEERING\]/g,
+              "",
+            )
+            .trim()
+
+          // Determine final card type based on tags
+          let finalCardType: CardType | null = getCardTypeFromQuery(input)
+
+          if (hasProjectsTag) {
+            finalCardType = "projects"
+            setActiveSection("projects")
+            setExploredTopics((prev) => new Set([...prev, "projects"]))
+          } else if (hasExperienceTag) {
+            finalCardType = "experience"
+            setActiveSection("experience")
+            setExploredTopics((prev) => new Set([...prev, "experience"]))
+          } else if (hasSkillsTag) {
+            finalCardType = "skills"
+            setActiveSection("skills")
+            setExploredTopics((prev) => new Set([...prev, "skills"]))
+          } else if (hasCertificationsTag) {
+            finalCardType = "certifications"
+            setActiveSection("certifications")
+            setExploredTopics((prev) => new Set([...prev, "certifications"]))
+          } else if (hasEducationTag) {
+            finalCardType = "education"
+            setActiveSection("education")
+            setExploredTopics((prev) => new Set([...prev, "education"]))
+          } else if (hasVolunteeringTag) {
+            finalCardType = "volunteering"
+            setActiveSection("volunteering")
+            setExploredTopics((prev) => new Set([...prev, "volunteering"]))
+          } else {
+            // If no specific tags, use the card type inferred from the original query
+            if (finalCardType) {
+              setActiveSection(finalCardType)
+              setExploredTopics((prev) => new Set([...prev, finalCardType]))
+            }
           }
 
           setMessages((prev) => [
             ...prev,
             {
               id: Date.now().toString(),
-              content: data.message || "I received your message but couldn't generate a proper response.",
+              content: cleanedContent,
               sender: "bot",
-              cardType: cardType || undefined,
+              cardType: finalCardType || undefined,
               isAiResponse: true,
             },
           ])
@@ -803,7 +851,6 @@ export function ChatInterface({ portfolioData }: ChatInterfaceProps) {
     )
   }
 
-  // Function to render cards (used by both CardCarousel and ChatExperienceSection)
   const renderCards = (message: Message, index: number, onFirstCardClick: () => void, hidePagination: boolean) => {
     const cardsToShow = message.cardType ? portfolioData[message.cardType] : []
 
@@ -819,17 +866,46 @@ export function ChatInterface({ portfolioData }: ChatInterfaceProps) {
       )
     }
 
-    return (
-      <div ref={message.id === messages[messages.length - 1]?.id ? activeCardRef : null}>
-        {message.cardType === "experience" ? (
+    if (message.cardType === "experience") {
+      return (
+        <div ref={message.id === messages[messages.length - 1]?.id ? activeCardRef : null}>
           <ChatExperienceSection
             experiences={cardsToShow}
             onCardClick={handleCardClick}
             hidePagination={hidePagination}
           />
-        ) : (
-          <CardCarousel cards={cardsToShow} onCardClick={handleCardClick} hidePagination={false} />
-        )}
+        </div>
+      )
+    }
+
+    if (message.cardType === "skills") {
+      return (
+        <div ref={message.id === messages[messages.length - 1]?.id ? activeCardRef : null}>
+          <ChatSkillsSection skills={cardsToShow} />
+        </div>
+      )
+    }
+
+    if (message.cardType === "certifications") {
+      return (
+        <div ref={message.id === messages[messages.length - 1]?.id ? activeCardRef : null}>
+          <ChatCertificationsSection certifications={cardsToShow} />
+        </div>
+      )
+    }
+
+    if (message.cardType === "education") {
+      return (
+        <div ref={message.id === messages[messages.length - 1]?.id ? activeCardRef : null}>
+          <ChatEducationSection education={cardsToShow} />
+        </div>
+      )
+    }
+
+    // Default fallback to CardCarousel for any other types (volunteering, etc.)
+    return (
+      <div ref={message.id === messages[messages.length - 1]?.id ? activeCardRef : null}>
+        <CardCarousel cards={cardsToShow} onCardClick={handleCardClick} hidePagination={false} />
       </div>
     )
   }
