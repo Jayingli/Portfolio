@@ -22,68 +22,38 @@ export interface PortfolioData {
   volunteering: CardData[]
 }
 
-export interface Project {
-  name: string
-  description: string
-  tags: string[]
-  image: string
-  url: string
-}
-
 export const portfolioData: PortfolioData = {
   experience: [
     {
       id: "exp0",
       type: "experience",
-      title: "Technical Project Manager & Scrum Master",
+      title: "Technical Project Manager & Product Owner",
       subtitle: "Noise Digital Inc., Toronto, ON",
       location: "Toronto, ON",
-      dates: "Aug 2024 – Oct 2025",
+      dates: "Aug 2024 – Present",
       description:
-        "Lead $750K+ portfolio of SaaS, automation, and data infrastructure projects across tagging, consent/privacy, and platform rollouts for clients in finance, healthcare, education, and retail, including treasury, reporting, and data-governance initiatives that required close coordination with internal stakeholders and hybrid Agile delivery.\n\n" +
-        "Run hybrid Agile delivery across selected workstreams, acting as Scrum Master for stand-ups, sprint planning, backlog refinement, and release checkpoints.\n\n" +
-        "Coordinate cross-functional teams (engineering, analytics, product, marketing) to deliver scalable programs from scoping to launch.\n\n" +
-        "Track delivery using RAID logs and dashboards, flagging risks and surfacing blockers for leadership decision-making.\n\n" +
-        "Partner with clients to align priorities, drive approvals, and integrate feedback loops post-launch.\n\n" +
-        "Support data governance and integration planning to enable reporting consistency and future-proof architecture.\n\n" +
-        "Develop QA plans, change-readiness comms, and support documentation to drive adoption.",
+        "Manage $750K+ Martech and data initiatives for enterprise clients across insurance, healthcare, higher education, finance, advertising, and law sectors—overseeing GTM migrations, GA4 framework builds, and OneTrust consent deployments to ensure GDPR/CCPA compliance and timely delivery.\n\n" +
+        "Own end-to-end delivery of 10+ active projects across Agile and Waterfall life cycles, including SOW creation, sprint planning, stakeholder alignment, QA coordination, and production handoff.\n\n" +
+        "Translate business objectives into technical specifications for GA4 event tracking, BigQuery-based CDMPs, and consent management workflows; bridge gaps between legal, engineering, and marketing teams to streamline execution.\n\n" +
+        "Develop and maintain project documentation including RAID logs, test plans, and dataLayer schemas; lead weekly standups and status calls to drive clarity across distributed teams.\n\n" +
+        "Proactively identify and manage 30+ project risks such as data pipeline delays, GTM code conflicts, and inconsistent taxonomies; implement mitigation plans to minimize delivery disruption.\n\n" +
+        "Lead project communications and client-facing deliverables, including technical briefs, QA summary reports, and post-implementation support plans; secure stakeholder buy-in for key changes such as schema redesigns and container rebuilds.\n\n" +
+        "Coordinate full project lifecycle from scoping to invoicing, working closely with analytics leads, engineering resources, clients, and third-party vendors.",
       tags: [
-        "Scrum Master",
         "Agile",
-        "Hybrid Delivery",
-        "SaaS",
-        "Data Infrastructure",
-        "RAID Logs",
-        "Sprint Planning",
-        "Backlog Refinement",
+        "Waterfall",
+        "Martech",
+        "GA4",
+        "GTM",
+        "BigQuery",
+        "OneTrust",
+        "GDPR/CCPA",
+        "SOW",
+        "RAID",
         "Stakeholder Management",
-        "Data Governance",
-        "QA",
-        "Cross-functional Teams",
+        "Technical Documentation",
       ],
       imageUrl: "/images/noise-logo.png",
-    },
-    {
-      id: "exp-sitesbyjay",
-      type: "experience",
-      title: "Founder & Full Stack Consultant",
-      subtitle: "Sites By Jay Li, Toronto, ON",
-      location: "Toronto, ON",
-      dates: "Jul 2025 – Present",
-      description:
-        "Run a self-directed web consultancy delivering custom sites and CMS solutions for small businesses.\n\n" +
-        "Lead full-stack builds, integrations (e.g. GA4, CRM, payments), and ongoing strategy to support growth and data-driven operations.\n\n" +
-        "Manage complete ownership of scoping, delivery, and client expectations to navigate ambiguity and protect delivery pace.",
-      tags: [
-        "Full Stack",
-        "Web Development",
-        "CMS",
-        "GA4",
-        "CRM Integration",
-        "Payments",
-        "Client Management",
-        "Small Business",
-      ],
     },
     {
       id: "exp1",
@@ -93,9 +63,10 @@ export const portfolioData: PortfolioData = {
       location: "Toronto, ON",
       dates: "Mar 2024 – May 2024",
       description:
-        "Delivered $250K Agile rebuild of national registry platform, improving security, speed, and UX.\n\n" +
-        "Owned backlog, sprint cadence, and roadmap planning across full-stack teams (ShadCN, Node, Stripe, analytics).",
-      tags: ["Product Owner", "Agile", "Full Stack", "Stripe", "REST API", "ShadCN", "SQL", "NoSQL", "System Design"],
+        "Led a $250K national registry rebuild.\n\n" +
+        "Delivered backend, UI, and secure Stripe integration using ShadCN.\n\n" +
+        "Implemented schema restructuring, SQL-to-NoSQL migration, message queuing, and real-time analytics tools.",
+      tags: ["Product Owner", "Full Stack", "Stripe", "REST API", "ShadCN", "SQL", "NoSQL", "System Design"],
       imageUrl: "/images/4d-logo.png",
     },
     {
@@ -106,19 +77,10 @@ export const portfolioData: PortfolioData = {
       location: "Toronto, ON",
       dates: "Aug 2023 – Feb 2024",
       description:
-        "Facilitated Scrum ceremonies and Agile delivery for 3 site migrations and 4 high-impact mobile and web builds with distributed teams across the UK, MX, US, and CA.\n\n" +
-        "Managed dependencies between PMO, SEO, engineering, content, and UX; tracked work in JIRA, Confluence, and shared dashboards to maintain delivery momentum and transparency.\n\n" +
-        "Led release planning, coordinated defect triage, and aligned testing across multiple time zones.",
-      tags: [
-        "Scrum Master",
-        "Agile",
-        "JIRA",
-        "Confluence",
-        "SEO",
-        "Release Planning",
-        "Global Teams",
-        "Site Migration",
-      ],
+        "Directed 3 site migrations and 4 global tech projects.\n\n" +
+        "Boosted sprint velocity by 33%, streamlined processes, and aligned roadmaps with business goals.\n\n" +
+        "Deployed Monday.com for global PM visibility.",
+      tags: ["Agile", "Scrum", "Monday.com", "SEO", "Roadmapping", "UX/UI", "Global Teams"],
       imageUrl: "/images/xlmedia-logo.png",
     },
     {
@@ -129,17 +91,9 @@ export const portfolioData: PortfolioData = {
       location: "Toronto, ON",
       dates: "Dec 2021 – Jul 2023",
       description:
-        "Delivered 35+ concurrent digital initiatives ($4.5M+) in a fast-paced agency setting, covering analytics, paid media, and marketing automation—consistently meeting scope, schedule, and quality targets.\n\n" +
-        "Coordinated QA, reporting, and campaign optimization using A/B testing frameworks and performance dashboards.",
-      tags: [
-        "Digital Marketing",
-        "Analytics",
-        "Paid Media",
-        "A/B Testing",
-        "Performance Dashboards",
-        "Marketing Automation",
-        "KPI",
-      ],
+        "Oversaw 35+ marketing projects with budgets over $4.5M.\n\n" +
+        "Increased stakeholder satisfaction by 16% through improved reporting and KPI tracking across Meta, TikTok, LinkedIn, and Google Ads campaigns.",
+      tags: ["Media", "Digital Marketing", "Reporting", "KPI", "PowerBI", "Looker Studio", "Paid Media"],
       imageUrl: "/images/hotspex-logo.png",
     },
   ],
@@ -147,196 +101,99 @@ export const portfolioData: PortfolioData = {
     {
       id: "skill1",
       type: "skills",
-      title: "Engineering Operations & Delivery",
+      title: "Project & Product Management",
       subtitle: "Expert",
       description:
         "🧩 Core Skills\n" +
-        "Sprint cadence, planning cycles, release coordination, dependency tracking, work-back plans, KPI/velocity dashboards, QA allocation\n\n" +
+        "Technical Project Management, Product Ownership, Agile, Scrum, Waterfall, Kanban, SDLC, PMLC, MoSCoW, RICE\n\n" +
         "🔧 Applications\n" +
-        "• End-to-end engineering project lifecycle management\n" +
-        "• Velocity tracking and sprint metrics\n" +
-        "• Cross-team dependency coordination\n" +
-        "• Release planning and deployment workflows\n\n" +
+        "• Roadmapping & Strategic Planning\n" +
+        "• SOW & Requirements Gathering\n" +
+        "• Sprint Planning & Retrospectives\n" +
+        "• Budgeting & Cost Control\n" +
+        "• Risk & Issue Management\n" +
+        "• Change Management\n" +
+        "• Stakeholder Engagement\n" +
+        "• Vendor Management & Procurement\n" +
+        "• Cross-Functional Team Leadership\n\n" +
         "🎯 Focus Areas\n" +
-        "• Large-scale SaaS and web infrastructure delivery\n" +
-        "• Engineering team operations and optimization\n" +
-        "• Technical project delivery at scale",
+        "• Technical delivery in marketing & analytics\n" +
+        "• Agile transformation\n" +
+        "• Stakeholder alignment",
       tags: [
-        "Sprint Cadence",
-        "Release Coordination",
-        "Dependency Tracking",
-        "KPI Dashboards",
-        "Velocity",
-        "QA Allocation",
-        "Work-back Plans",
+        "Project Management",
+        "Product Ownership",
+        "Agile",
+        "Scrum",
+        "Roadmapping",
+        "Requirements",
+        "Stakeholder Management",
       ],
     },
     {
       id: "skill2",
       type: "skills",
-      title: "Process & Governance",
-      subtitle: "Expert",
+      title: "Tools & Platforms",
+      subtitle: "Advanced",
       description:
         "🧩 Core Skills\n" +
-        "Roadmapping, estimation standards, Jira/Confluence best practices, work intake, status reporting, risk escalation\n\n" +
-        "🔧 Tools\n" +
-        "• Jira, Confluence (admin & customization)\n" +
-        "• Process documentation and templates\n" +
-        "• RAID logs and risk management\n\n" +
+        "Jira, Asana, Monday.com, Teamwork, Airtable, Microsoft Office, Google Workspace, CODA, Figma, Miro, Mural\n\n" +
+        "🔧 Applications\n" +
+        "• Project tracking & workflow management\n" +
+        "• Documentation & knowledge sharing\n" +
+        "• Design collaboration & prototyping\n" +
+        "• Data visualization & reporting\n" +
+        "• Team communication & coordination\n\n" +
         "🎯 Focus Areas\n" +
-        "• PMO framework setup and optimization\n" +
-        "• Governance standards for enterprise clients\n" +
-        "• Work intake and prioritization processes",
-      tags: [
-        "Roadmapping",
-        "Estimation",
-        "Jira Best Practices",
-        "Confluence",
-        "Work Intake",
-        "Status Reporting",
-        "Risk Escalation",
-      ],
+        "• Workflow optimization\n" +
+        "• Cross-tool integration\n" +
+        "• Process automation",
+      tags: ["Jira", "Asana", "Monday.com", "Figma", "Miro", "Power BI", "Looker Studio"],
     },
     {
       id: "skill3",
       type: "skills",
-      title: "Agile & Hybrid Delivery",
-      subtitle: "Expert",
+      title: "Software Engineering Skills",
+      subtitle: "Intermediate",
       description:
         "🧩 Core Skills\n" +
-        "Scrum, Kanban, backlog refinement, sprint planning, retros, stand-ups, hybrid workflows\n\n" +
-        "🔧 Methodologies\n" +
-        "• Scrum framework and ceremonies\n" +
-        "• Kanban flow management\n" +
-        "• Hybrid Agile for enterprise settings\n\n" +
+        "HTML, CSS, JavaScript, React.js, Node.js, Express.js, REST APIs, MySQL, NoSQL, AWS\n\n" +
+        "🔧 Applications\n" +
+        "• Frontend development with React\n" +
+        "• API integration & authentication\n" +
+        "• Database schema design\n" +
+        "• Testing & debugging\n" +
+        "• Version control with Git\n" +
+        "• Deployment workflows\n\n" +
         "🎯 Focus Areas\n" +
-        "• Scrum Master facilitation\n" +
-        "• Agile transformation and coaching\n" +
-        "• Cross-functional Agile team leadership",
-      tags: ["Scrum", "Kanban", "Backlog Refinement", "Sprint Planning", "Retros", "Stand-ups", "Hybrid Workflows"],
+        "• Technical feasibility assessment\n" +
+        "• Developer collaboration\n" +
+        "• Code quality standards",
+      tags: ["JavaScript", "React", "Node.js", "REST API", "MySQL", "NoSQL", "Testing"],
     },
     {
       id: "skill4",
       type: "skills",
-      title: "Metrics & Tools",
+      title: "Product Management & UX",
       subtitle: "Advanced",
       description:
         "🧩 Core Skills\n" +
-        "Dashboards for velocity, SLAs, incident response; data pipelines, analytics integration\n\n" +
-        "🔧 Tools\n" +
-        "• Jira, Confluence, Azure DevOps\n" +
-        "• Asana, Monday.com\n" +
-        "• GA4, Power BI, Looker Studio\n\n" +
+        "Product Strategy, Market Research, User Research, Wireframing, Prototyping, Usability Testing, Analytics\n\n" +
+        "🔧 Applications\n" +
+        "• Product-market fit analysis\n" +
+        "• MVP definition & roadmapping\n" +
+        "• User personas & journey mapping\n" +
+        "• PRDs & user stories\n" +
+        "• A/B testing & feature validation\n" +
+        "• KPI tracking & optimization\n\n" +
         "🎯 Focus Areas\n" +
-        "• Custom dashboard creation for stakeholders\n" +
-        "• SLA tracking and incident response reporting\n" +
-        "• Data-driven project insights and optimization",
-      tags: ["Dashboards", "Velocity Tracking", "SLAs", "Jira", "Azure DevOps", "GA4", "Power BI", "Looker Studio"],
-    },
-    {
-      id: "skill5",
-      type: "skills",
-      title: "Collaboration & Productivity",
-      subtitle: "Expert",
-      description:
-        "🧩 Core Skills\n" +
-        "Cross-functional facilitation across engineering, product, QA, business ops\n\n" +
-        "🔧 Tools\n" +
-        "• Microsoft 365, Google Workspace\n" +
-        "• Smartsheet, Slack, Zoom, Miro\n\n" +
-        "🎯 Focus Areas\n" +
-        "• Remote and distributed team coordination\n" +
-        "• Stakeholder communication at all levels\n" +
-        "• Building alignment between engineering, product, and business",
-      tags: ["Microsoft 365", "Google Workspace", "Smartsheet", "Slack", "Zoom", "Miro", "Cross-functional Teams"],
-    },
-    {
-      id: "skill6",
-      type: "skills",
-      title: "Testing & QA Support",
-      subtitle: "Advanced",
-      description:
-        "🧩 Core Skills\n" +
-        "QA capacity planning, defect triage, performance monitoring, debugging support\n\n" +
-        "🔧 Tools\n" +
-        "• Lighthouse, Hotjar, ObservePoint\n" +
-        "• Chrome DevTools, GA Debugger\n\n" +
-        "🎯 Focus Areas\n" +
-        "• QA coordination and test planning\n" +
-        "• Defect triage and prioritization\n" +
-        "• Performance optimization support",
-      tags: ["QA Planning", "Defect Triage", "Lighthouse", "Hotjar", "ObservePoint", "Testing Coordination"],
+        "• User-centered design\n" +
+        "• Data-driven decision making\n" +
+        "• Cross-functional collaboration",
+      tags: ["Product Strategy", "MVPs", "Wireframing", "Usability Testing", "Personas", "Analytics", "User Stories"],
     },
   ],
   projects: [
-    {
-      id: "proj-elixir1",
-      type: "projects",
-      title: "Elixir1 Skincare Clinic - Medical Aesthetics Website",
-      subtitle: "Client Project | Full Service Web Development",
-      dates: "2025",
-      description:
-        "Led the project from brand strategy through design and development for a luxury medical aesthetics clinic.\n\n" +
-        "Defined a luxury brand identity with a gold and dark palette reflecting premium services.\n\n" +
-        "Integrated booking and VISIA skin analysis systems seamlessly for client convenience.\n\n" +
-        "Built mobile-first responsive design with service pages featuring detailed treatment descriptions and brand partners.",
-      tags: [
-        "Web Design",
-        "Brand Strategy",
-        "Next.js",
-        "Booking Integration",
-        "Responsive Design",
-        "UX/UI",
-        "Medical Aesthetics",
-      ],
-      link: "https://www.elixir1.ca/",
-      image: "/images/elixir1-screenshot.png",
-    },
-    {
-      id: "proj-browfix",
-      type: "projects",
-      title: "BrowFix - Premium Beauty Services Booking Platform",
-      subtitle: "Client Project | Full Service Web Development",
-      dates: "2025",
-      description:
-        "Led the project from brand strategy through design and development for a premium brow and lash beauty service.\n\n" +
-        "Defined a clean, modern brand identity with soft pink accent palette.\n\n" +
-        "Integrated seamless booking system for brow and lash appointments with treatment details.\n\n" +
-        "Built professional gallery showcasing before/after results with optimized mobile loading and local SEO.",
-      tags: ["Web Design", "Brand Strategy", "Booking System", "Responsive Design", "Beauty Services", "UX/UI", "SEO"],
-      link: "https://browfix.ca/",
-      image: "/images/browfix-screenshot.png",
-    },
-    {
-      id: "proj-macafe",
-      type: "projects",
-      title: "M&A Cafe - Artisanal Coffee Shop Experience",
-      subtitle: "Client Project | Full Service Web Development",
-      dates: "2025",
-      description:
-        "Led the project from brand strategy through design and development for an artisanal coffee shop.\n\n" +
-        "Defined a warm, artisanal brand identity with sophisticated gold accents and compelling storytelling.\n\n" +
-        "Integrated online ordering system with Uber Eats connectivity for seamless delivery.\n\n" +
-        "Created gallery showcase highlighting coffee craftsmanship with mobile-optimized design for on-the-go ordering.",
-      tags: ["Web Design", "Brand Strategy", "Next.js", "E-commerce", "Responsive Design", "UX/UI", "Food & Beverage"],
-      link: "https://macafeto.ca/",
-      image: "/images/macafe-screenshot.png",
-    },
-    {
-      id: "proj-drcat",
-      type: "projects",
-      title: "Dr. Cat Wellness - Therapeutic Massage Services",
-      subtitle: "Client Project | Full Service Web Development",
-      dates: "2025",
-      description:
-        "Built a calming, professional website for a therapeutic massage practice focused on human touch and healing.\n\n" +
-        "Designed a serene interface reflecting the healing philosophy with intuitive service exploration.\n\n" +
-        "Integrated booking system for multiple massage modalities including Swedish, Deep Tissue, Thai, and Prenatal.\n\n" +
-        "Created detailed service descriptions with pricing, benefits, and optional enhancements for personalized care.",
-      tags: ["Web Design", "Booking System", "Wellness Services", "Responsive Design", "UX/UI", "Healthcare", "SEO"],
-      link: "https://www.drcatwellness.com/",
-      image: "/images/drcat-screenshot.png",
-    },
     {
       id: "proj-tarot",
       type: "projects",
@@ -446,14 +303,20 @@ export const portfolioData: PortfolioData = {
   ],
   certifications: [
     {
-      id: "cert-acp",
+      id: "cert0",
       type: "certifications",
-      title: "Agile Certified Practitioner (PMI-ACP)",
-      subtitle: "Project Management Institute (PMI)",
-      dates: "Expected Feb 2026",
+      title: "Product Manager Certification (PMC™)",
+      subtitle: "BrainStation",
+      dates: "2024",
       description:
-        "Currently pursuing PMI-ACP certification to validate expertise in Agile principles and practices. This certification demonstrates knowledge of Agile methodologies including Scrum, Kanban, Lean, and XP across various project types.",
-      tags: ["Agile", "PMI", "Scrum", "Kanban", "Lean", "Project Management"],
+        "Completed an 8-week, part-time product management certification program.\n\n" +
+        "Built product strategies using Agile, Scrum, Lean, and Jobs-To-Be-Done frameworks.\n\n" +
+        "Developed product roadmaps, wireframes, and go-to-market strategies.\n\n" +
+        "Conducted user research, created personas, PRDs, MVPs, and product analytics reports.\n\n" +
+        "Collaborated on product launch planning, stakeholder communication, and risk mitigation.\n\n" +
+        "Gained hands-on experience with Figma, Jira, Google Forms, SurveyMonkey, ChatGPT, and industry best practices.",
+      tags: ["Product Management", "Agile", "Scrum", "Lean", "JTBD", "Roadmapping", "User Research", "Wireframing"],
+      imageUrl: "/images/brainstation-pmc-logo.svg",
     },
     {
       id: "cert1",
@@ -491,7 +354,7 @@ export const portfolioData: PortfolioData = {
     {
       id: "cert4",
       type: "certifications",
-      title: "Atlassian Agile Project Management Certification",
+      title: "Atlassian Agile Project Management",
       subtitle: "Atlassian",
       dates: "2023",
       description:
@@ -617,38 +480,3 @@ export const portfolioData: PortfolioData = {
     },
   ],
 }
-
-export const projectsForCarousel: Project[] = [
-  {
-    name: "Elixir1 Skincare Clinic",
-    description:
-      "Full-service brand identity and website for a premium medical aesthetics clinic. Features gold accent palette, luxury design system, VISIA skin analysis integration, and booking system.",
-    tags: ["Brand Strategy", "Web Design", "Booking System"],
-    image: "/images/elixir1-screenshot.png",
-    url: "https://www.elixir1.ca/",
-  },
-  {
-    name: "BrowFix",
-    description:
-      "Modern beauty studio website with soft pink branding. Includes service booking integration, before/after gallery, and mobile-optimized design for premium brow and lash services.",
-    tags: ["Web Design", "Booking Integration", "Brand Identity"],
-    image: "/images/browfix-screenshot.png",
-    url: "https://browfix.ca/",
-  },
-  {
-    name: "M&A CAFE",
-    description:
-      "Artisanal coffee shop website with warm brand identity and sophisticated gold accents. Features online menu, Uber Eats integration, and compelling coffee culture storytelling.",
-    tags: ["Web Design", "E-commerce", "Brand Identity"],
-    image: "/images/macafe-screenshot.png",
-    url: "https://macafeto.ca/",
-  },
-  {
-    name: "Dr. Cat Wellness",
-    description:
-      "Calming, professional wellness clinic website with Acuity Scheduling integration. Features therapist bio, service descriptions, accessibility compliance, and mobile-first design.",
-    tags: ["Web Design", "Booking System", "Brand Strategy"],
-    image: "/images/drcat-screenshot.png",
-    url: "https://www.drcatwellness.com/",
-  },
-]
